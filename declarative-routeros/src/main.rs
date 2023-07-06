@@ -1,8 +1,10 @@
 use clap::Parser;
 
 mod commands;
+mod session;
 
-use crate::commands::download::command_download;
+use crate::commands::apply;
+use crate::commands::download;
 
 #[derive(Parser, Debug)]
 enum Command {
@@ -16,7 +18,7 @@ fn main() -> Result<(), ssh2::Error> {
     let command = Command::parse();
 
     match command {
-        Command::Download => command_download(),
-        Command::Apply => todo!(),
+        Command::Download => download::command(),
+        Command::Apply => apply::command(),
     }
 }
