@@ -1,26 +1,44 @@
 use ssh2::Session;
+use std::env;
+use std::fs::File;
 use std::io::prelude::*;
 use std::net::TcpStream;
 use std::path::Path;
-use std::env;
-use std::fs::File;
 
-fn main() -> Result<(), ssh2::Error>{
-    let session = connect()?;
-    sftp_download_backup(&session);
+use clap::Parser;
+
+#[derive(Parser, Debug)]
+enum Command {
+    /// Download a system's configuration
+    Download,
+    /// Apply a configuration
+    Apply,
+}
+
+fn main() -> Result<(), ssh2::Error> {
+    let command = Command::parse();
+
+    match command {
+        Command::Download => {
+            let session = connect()?;
+            sftp_download_backup(&session);
+        }
+        Command::Apply => todo!(),
+    };
     Ok(())
 }
 
-
-
-fn connect() -> Result<ssh2::Session, ssh2::Error > {
+fn connect() -> Result<ssh2::Session, ssh2::Error> {
     // Connect to the local SSH server
     let tcp = TcpStream::connect("192.168.100.1:22").unwrap();
     let mut session = Session::new()?;
     session.set_tcp_stream(tcp);
     session.handshake()?;
 
-    session.userauth_password(&env::var("ROUTEROS_SSH_USER").unwrap(), &env::var("ROUTEROS_SSH_PASSWORD").unwrap())?;
+    session.userauth_password(
+        &env::var("ROUTEROS_SSH_USER").unwrap(),
+        &env::var("ROUTEROS_SSH_PASSWORD").unwrap(),
+    )?;
     Ok(session)
 }
 

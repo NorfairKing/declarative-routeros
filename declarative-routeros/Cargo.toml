@@ -5,3 +5,4 @@ edition = "2021"
 
 [dependencies]
 ssh2 = "*"
+clap = { version = "*", features = [ "derive" ] }
