@@ -1,6 +1,8 @@
 use std::env;
 
 use clap::Parser;
+use commands::apply::combine_to_apply_settings;
+use commands::apply::ApplyFlags;
 use session::SessionSettings;
 
 mod commands;
@@ -14,7 +16,7 @@ enum Command {
     /// Download a system's configuration
     Download,
     /// Apply a configuration
-    Apply,
+    Apply(ApplyFlags),
 }
 
 fn main() -> Result<(), ssh2::Error> {
@@ -27,6 +29,8 @@ fn main() -> Result<(), ssh2::Error> {
 
     match command {
         Command::Download => download::command(settings),
-        Command::Apply => apply::command(settings),
+        Command::Apply(apply_flags) => {
+            apply::command(settings, combine_to_apply_settings(apply_flags))
+        }
     }
 }
