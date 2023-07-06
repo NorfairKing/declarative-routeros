@@ -1,17 +1,19 @@
 use ssh2::Session;
-use std::env;
-use std::net::TcpStream;
+use std::net::{SocketAddr, TcpStream};
 
-pub fn connect() -> Result<ssh2::Session, ssh2::Error> {
+pub fn connect(settings: SessionSettings) -> Result<ssh2::Session, ssh2::Error> {
     // Connect to the local SSH server
-    let tcp = TcpStream::connect("192.168.100.1:22").unwrap();
+    let tcp = TcpStream::connect(settings.address).unwrap();
     let mut session = Session::new()?;
     session.set_tcp_stream(tcp);
     session.handshake()?;
 
-    session.userauth_password(
-        &env::var("ROUTEROS_SSH_USER").unwrap(),
-        &env::var("ROUTEROS_SSH_PASSWORD").unwrap(),
-    )?;
+    session.userauth_password(&settings.user, &settings.password)?;
     Ok(session)
+}
+
+pub struct SessionSettings {
+    pub user: String,
+    pub password: String,
+    pub address: SocketAddr,
 }

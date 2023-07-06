@@ -2,10 +2,10 @@ use std::fs::File;
 use std::io::prelude::*;
 use std::path::Path;
 
-use crate::session::connect;
+use crate::session::{connect, SessionSettings};
 
-pub fn command() -> Result<(), ssh2::Error> {
-    let session = connect()?;
+pub fn command(settings: SessionSettings) -> Result<(), ssh2::Error> {
+    let session = connect(settings)?;
     sftp_download_backup(&session);
     Ok(())
 }
