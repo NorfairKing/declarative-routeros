@@ -20,7 +20,7 @@ pub struct ApplySettings {
 }
 
 pub fn combine_to_apply_settings(flags: ApplyFlags) -> ApplySettings {
-    let script_file = flags.script_file.to_path_buf();
+    let script_file = flags.script_file;
     ApplySettings { script_file }
 }
 
@@ -43,7 +43,7 @@ fn apply(apply_settings: ApplySettings, session: Session) -> Result<(), ssh2::Er
     let bytes = str.as_bytes();
 
     let mut remote_file = session.scp_send(remote_filename, 0o644, bytes.len() as u64, None)?;
-    remote_file.write(bytes).unwrap();
+    remote_file.write_all(bytes).unwrap();
 
     // Close the channel and wait for the whole content to be tranferred
     remote_file.send_eof().unwrap();
