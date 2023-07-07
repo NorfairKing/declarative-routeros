@@ -1,8 +1,9 @@
 use clap::Args;
+use rpassword::prompt_password;
 use ssh2::Session;
 use std::{
     env,
-    net::{SocketAddr, TcpStream},
+    net::{IpAddr, SocketAddr, TcpStream},
 };
 
 #[derive(Debug, Clone, Args)]
@@ -10,7 +11,7 @@ pub struct SessionFlags {
     #[arg(short, long)]
     username: String,
     #[arg()]
-    router_address: SocketAddr,
+    router_address: IpAddr,
 }
 
 pub struct SessionSettings {
@@ -21,8 +22,10 @@ pub struct SessionSettings {
 
 pub fn combine_to_session_settings(flags: SessionFlags) -> SessionSettings {
     let username = flags.username;
-    let password = env::var("ROUTEROS_SSH_PASSWORD").unwrap();
-    let router_address = flags.router_address;
+    let password = env::var("ROUTEROS_SSH_PASSWORD")
+        .or_else(|_| prompt_password("Password: "))
+        .unwrap();
+    let router_address = SocketAddr::new(flags.router_address, 22);
     SessionSettings {
         username,
         password,
