@@ -37,7 +37,16 @@ const REMOTE_FILENAME: &str = "declarative-routeros-script.rsc";
 
 fn apply(apply_settings: ApplySettings, session: Session) -> Result<(), ssh2::Error> {
     let remote_filename = Path::new(REMOTE_FILENAME);
+    upload_script(apply_settings, &session, remote_filename)?;
+    reset_into_configuration(session, remote_filename)
+}
 
+/// Upload the configuration script
+fn upload_script(
+    apply_settings: ApplySettings,
+    session: &Session,
+    remote_filename: &Path,
+) -> Result<(), ssh2::Error> {
     // TODO error handling about the filename
     let str = read_to_string(apply_settings.script_file).unwrap();
     let bytes = str.as_bytes();
@@ -50,13 +59,19 @@ fn apply(apply_settings: ApplySettings, session: Session) -> Result<(), ssh2::Er
     remote_file.wait_eof().unwrap();
     remote_file.close().unwrap();
     remote_file.wait_close().unwrap();
+    Ok(())
+}
 
-    // let mut channel = sess.channel_session().unwrap();
-    // channel.exec("echo running: /system reset-configuration keep-users no-defaults run-after-reset=new-build.rsc").unwrap();
-    // let mut s = String::new();
-    // channel.read_to_string(&mut s).unwrap();
-    // println!("{}", s);
-    // channel.wait_close();
-    // println!("{}", channel.exit_status().unwrap());
+/// Reset the router with the new configuration
+fn reset_into_configuration(session: Session, remote_filename: &Path) -> Result<(), ssh2::Error> {
+    let mut channel = session.channel_session()?;
+    let reset_command = format!(
+        "/system reset-configuration keep-users=yes no-defaults=yes run-after-reset={}",
+        remote_filename.display()
+    );
+    println!("Running remotely: {}", reset_command);
+    channel.exec(&reset_command).unwrap();
+    // Don't wait for a response because the system resets immediately
+    println!("{}", channel.exit_status().unwrap());
     Ok(())
 }
