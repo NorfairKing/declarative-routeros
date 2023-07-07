@@ -1,9 +1,8 @@
-use std::env;
-
-use clap::Parser;
+use clap::{Parser, Subcommand};
 use commands::apply::combine_to_apply_settings;
 use commands::apply::ApplyFlags;
-use session::SessionSettings;
+use session::combine_to_session_settings;
+use session::SessionFlags;
 
 mod commands;
 mod session;
@@ -11,7 +10,16 @@ mod session;
 use crate::commands::apply;
 use crate::commands::download;
 
-#[derive(Parser, Debug)]
+#[derive(Debug, Clone, Parser)]
+struct Arguments {
+    #[command(subcommand)]
+    command: Command,
+
+    #[command(flatten)]
+    flags: SessionFlags,
+}
+
+#[derive(Debug, Clone, Subcommand)]
 enum Command {
     /// Download a system's configuration
     Download,
@@ -20,14 +28,10 @@ enum Command {
 }
 
 fn main() -> Result<(), ssh2::Error> {
-    let command = Command::parse();
-    let settings = SessionSettings {
-        user: env::var("ROUTEROS_SSH_USER").unwrap(),
-        password: env::var("ROUTEROS_SSH_PASSWORD").unwrap(),
-        address: "192.168.100.1:22".parse().unwrap(),
-    };
+    let arguments = Arguments::parse();
+    let settings = combine_to_session_settings(arguments.flags);
 
-    match command {
+    match arguments.command {
         Command::Download => download::command(settings),
         Command::Apply(apply_flags) => {
             apply::command(settings, combine_to_apply_settings(apply_flags))

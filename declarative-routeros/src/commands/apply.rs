@@ -4,14 +4,14 @@ use std::{
     path::{Path, PathBuf},
 };
 
-use clap::Parser;
+use clap::Args;
 use ssh2::Session;
 
 use crate::session::{connect, SessionSettings};
 
-#[derive(Parser, Debug)]
+#[derive(Debug, Clone, Args)]
 pub struct ApplyFlags {
-    #[arg(short, long)]
+    #[arg()]
     script_file: PathBuf,
 }
 
@@ -29,17 +29,21 @@ pub fn command(
     apply_settings: ApplySettings,
 ) -> Result<(), ssh2::Error> {
     let session = connect(session_settings)?;
-    apply(apply_settings, session);
+    apply(apply_settings, session)?;
     Ok(())
 }
 
-const REMOTE_FILENAME: &Path = Path::new("declarative-routeros-script.rsc");
+const REMOTE_FILENAME: &str = "declarative-routeros-script.rsc";
 
 fn apply(apply_settings: ApplySettings, session: Session) -> Result<(), ssh2::Error> {
-    let mut remote_file = session.scp_send(&REMOTE_FILENAME, 0o644, 10, None)?;
+    let remote_filename = Path::new(REMOTE_FILENAME);
 
-    let str = read_to_string(apply_settings.script_file)?;
-    remote_file.write(str).unwrap();
+    // TODO error handling about the filename
+    let str = read_to_string(apply_settings.script_file).unwrap();
+    let bytes = str.as_bytes();
+
+    let mut remote_file = session.scp_send(remote_filename, 0o644, bytes.len() as u64, None)?;
+    remote_file.write(bytes).unwrap();
 
     // Close the channel and wait for the whole content to be tranferred
     remote_file.send_eof().unwrap();
@@ -54,4 +58,5 @@ fn apply(apply_settings: ApplySettings, session: Session) -> Result<(), ssh2::Er
     // println!("{}", s);
     // channel.wait_close();
     // println!("{}", channel.exit_status().unwrap());
+    Ok(())
 }
