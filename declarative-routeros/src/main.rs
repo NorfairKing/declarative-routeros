@@ -1,6 +1,8 @@
 use clap::{Parser, Subcommand};
 use commands::apply::combine_to_apply_settings;
 use commands::apply::ApplyFlags;
+use commands::download::combine_to_download_settings;
+use commands::download::DownloadFlags;
 use session::combine_to_session_settings;
 use session::SessionFlags;
 
@@ -22,7 +24,7 @@ struct Arguments {
 #[derive(Debug, Clone, Subcommand)]
 enum Command {
     /// Download a system's configuration
-    Download,
+    Download(DownloadFlags),
     /// Apply a configuration
     Apply(ApplyFlags),
 }
@@ -32,7 +34,9 @@ fn main() -> Result<(), ssh2::Error> {
     let settings = combine_to_session_settings(arguments.flags);
 
     match arguments.command {
-        Command::Download => download::command(settings),
+        Command::Download(download_flags) => {
+            download::command(settings, combine_to_download_settings(download_flags))
+        }
         Command::Apply(apply_flags) => {
             apply::command(settings, combine_to_apply_settings(apply_flags))
         }
