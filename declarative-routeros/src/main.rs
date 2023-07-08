@@ -5,6 +5,7 @@ use commands::download::combine_to_download_settings;
 use commands::download::DownloadFlags;
 use session::combine_to_session_settings;
 use session::SessionFlags;
+use tracing_subscriber::EnvFilter;
 
 mod commands;
 mod session;
@@ -32,6 +33,14 @@ enum Command {
 fn main() -> Result<(), ssh2::Error> {
     let arguments = Arguments::parse();
     let settings = combine_to_session_settings(arguments.flags);
+
+    tracing_subscriber::fmt()
+        .with_target(false) // don't include targets
+        .with_thread_ids(false) // include the thread ID of the current thread
+        .with_thread_names(false) // include the name of the current thread
+        .with_env_filter(EnvFilter::from_default_env())
+        .compact()
+        .init();
 
     match arguments.command {
         Command::Download(download_flags) => {

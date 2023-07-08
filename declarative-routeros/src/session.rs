@@ -3,8 +3,10 @@ use rpassword::prompt_password;
 use ssh2::Session;
 use std::{
     env,
+    io::Read,
     net::{IpAddr, SocketAddr, TcpStream},
 };
+use tracing::{debug, error, info};
 
 #[derive(Debug, Clone, Args)]
 pub struct SessionFlags {
@@ -42,4 +44,26 @@ pub fn connect(settings: SessionSettings) -> Result<ssh2::Session, ssh2::Error> 
 
     session.userauth_password(&settings.username, &settings.password)?;
     Ok(session)
+}
+
+pub fn run_command_remotely(session: &ssh2::Session, command: &str) -> Result<(), ssh2::Error> {
+    let mut channel = session.channel_session()?;
+    info!("Running remotely: {}", command);
+    channel.exec(&command)?;
+    let mut response = String::new();
+    channel.read_to_string(&mut response).unwrap();
+    debug!(
+        "Response after removing the remote backup file: {}.",
+        response
+    );
+    channel.wait_close()?;
+    let exit_status = channel.exit_status()?;
+    debug!("Exit code: {}", exit_status);
+    if exit_status != 0 {
+        error!(
+            "Command failed with exit code: {}.\n{}",
+            exit_status, response
+        );
+    }
+    Ok(())
 }

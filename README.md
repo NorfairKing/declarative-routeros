@@ -52,3 +52,8 @@ The `apply` command will upload a configuration script to the router and then ru
 /system reset-configuration keep-users=yes no-defaults=yes run-after-reset=configuration.rsc
 ```
 
+
+### Hacking
+
+Run `nix develop` or `direnv allow` to get a development shell.
+Then run `feedback -- cargo run` in the `declarative-routeros` directory.

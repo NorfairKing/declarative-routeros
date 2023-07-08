@@ -6,6 +6,7 @@ use std::{
 
 use clap::Args;
 use ssh2::Session;
+use tracing::{debug, error, info};
 
 use crate::session::{connect, SessionSettings};
 
@@ -69,9 +70,16 @@ fn reset_into_configuration(session: Session, remote_filename: &Path) -> Result<
         "/system reset-configuration keep-users=yes no-defaults=yes run-after-reset={}",
         remote_filename.display()
     );
-    println!("Running remotely: {}", reset_command);
-    channel.exec(&reset_command).unwrap();
+    info!("Running remotely: {}", reset_command);
+    // We can't use the `run_command_remotely` function here because it tries reads the router's response
+    // in the ssh2 channel, but the router does not send such a respond because it's already busy
+    // resetting.
+    channel.exec(&reset_command)?;
     // Don't wait for a response because the system resets immediately
-    println!("{}", channel.exit_status().unwrap());
+    let exit_status = channel.exit_status()?;
+    debug!("Exit code: {}", exit_status);
+    if exit_status != 0 {
+        error!("Command failed with exit code: {}.", exit_status);
+    }
     Ok(())
 }
