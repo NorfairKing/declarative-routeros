@@ -23,9 +23,9 @@
     in
     {
       overlays.${system} = import ./nix/overlay.nix;
-      packages.${system}.release = pkgs.declarative-routeros;
+      packages.${system}.default = pkgs.declarative-routeros;
       checks.${system} = {
-        release = self.packages.${system}.release;
+        release = self.packages.${system}.default;
         shell = self.devShells.${system}.default;
         pre-commit = pre-commit-hooks.lib.${system}.run {
           src = ./.;
