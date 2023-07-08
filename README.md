@@ -4,10 +4,20 @@ Declarative configuration management for routers running RouterOS like Mikrotik 
 
 ## Installation
 
+### With cargo
+
 ``` console
 git clone https://github.com/NorfairKing/declarative-routeros.git
 cd declarative-routeros/declarative-routeros
 cargo build --release
+```
+
+### With nix flakes
+
+There is a `flake.nix` that will let you incorporate this tool into your system, but you can also run this command:
+
+```
+nix run github:NorfairKing/declarative-routeros
 ```
 
 ## How to use
