@@ -12,14 +12,13 @@
     }:
     let
       system = "x86_64-linux";
-      pkgsFor = nixpkgs: import nixpkgs {
+      pkgs = import nixpkgs {
         inherit system;
         config.allowUnfree = true;
         overlays = [
           self.overlays.${system}
         ];
       };
-      pkgs = pkgsFor nixpkgs;
     in
     {
       overlays.${system} = import ./nix/overlay.nix;
