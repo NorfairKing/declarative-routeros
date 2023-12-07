@@ -1,7 +1,7 @@
 {
   description = "halo2-trying";
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs?ref=nixos-23.05";
+    nixpkgs.url = "github:NixOS/nixpkgs?ref=nixos-23.11";
     pre-commit-hooks.url = "github:cachix/pre-commit-hooks.nix";
   };
 
