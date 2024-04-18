@@ -19,10 +19,14 @@
           self.overlays.${system}
         ];
       };
+      pkgsMusl = pkgs.pkgsMusl;
     in
     {
       overlays.${system} = import ./nix/overlay.nix;
-      packages.${system}.default = pkgs.declarative-routeros;
+      packages.${system} = {
+        default = pkgs.declarative-routeros;
+        static = pkgsMusl.declarative-routeros;
+      };
       checks.${system} = {
         release = self.packages.${system}.default;
         shell = self.devShells.${system}.default;
