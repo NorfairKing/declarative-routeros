@@ -29,6 +29,7 @@
       };
       checks.${system} = {
         release = self.packages.${system}.default;
+        static = self.packages.${system}.static;
         shell = self.devShells.${system}.default;
         pre-commit = pre-commit-hooks.lib.${system}.run {
           src = ./.;
