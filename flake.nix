@@ -1,7 +1,7 @@
 {
-  description = "halo2-trying";
+  description = "declarative-routeros";
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs?ref=nixos-23.11";
+    nixpkgs.url = "github:NixOS/nixpkgs?ref=nixos-24.05";
     pre-commit-hooks.url = "github:cachix/pre-commit-hooks.nix";
   };
 
@@ -40,7 +40,7 @@
       };
       devShells.${system}.default = pkgs.mkShell {
         name = "declarative-routeros-shell";
-        buildInputs = (with pkgs; [
+        buildInputs = with pkgs; [
           cargo
           clippy
           openssl
@@ -48,10 +48,7 @@
           rust-analyzer
           rustfmt
           rustc
-        ]) ++ (with pre-commit-hooks.packages.${system};
-          [
-            nixpkgs-fmt
-          ]);
+        ] ++ self.checks.${system}.pre-commit.enabledPackages;
         shellHook = self.checks.${system}.pre-commit.shellHook;
       };
     };
