@@ -14,11 +14,7 @@ rustPlatform.buildRustPackage {
     pkg-config
   ];
 
-  buildInputs = [
-    (if stdenv.hostPlatform.isMusl
-    then (openssl.override { static = true; })
-    else openssl)
-  ];
+  buildInputs = [ openssl ];
 
   cargoLock = {
     lockFile = ./Cargo.lock;
