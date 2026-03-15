@@ -1,0 +1,5 @@
+# Nix build output
+result
+
+# direnv
+.direnv/
