@@ -1,5 +1,7 @@
 # Declarative RouterOS (Mikrotik)
 
+[![NixCI](https://staging.nix-ci.com/badge/gh:NorfairKing:declarative-routeros)](https://staging.nix-ci.com/gh:NorfairKing:declarative-routeros)
+
 Declarative configuration management for routers running RouterOS like Mikrotik routers.
 
 ## Installation
