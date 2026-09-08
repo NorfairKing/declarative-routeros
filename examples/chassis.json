@@ -1,0 +1,11 @@
+{
+  "boardName": "Example-3G",
+  "architectureName": "arm64",
+  "version": "7.21",
+  "interfaces": [
+    "ether1",
+    "ether2",
+    "ether3"
+  ],
+  "serialPorts": 1
+}

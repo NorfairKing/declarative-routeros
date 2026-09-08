@@ -1,0 +1,28 @@
+[0;91;1m[error use-before-definition][0m: This uses lan before the line that creates it.
+     [0;90;1m╭──▶[0m [0;32;1muse-before-definition.rsc@2:12-2:15[0m
+     [0;90;1m│[0m
+[0;90;1m   2 │[0m [0;97ma[0m[0;97md[0m[0;97md[0m[0;97m [0m[0;97mb[0m[0;97mr[0m[0;97mi[0m[0;97md[0m[0;97mg[0m[0;97me[0m[0;97m=[0m[0;91;1ml[0m[0;91;1ma[0m[0;91;1mn[0m[0;97m [0m[0;97mi[0m[0;97mn[0m[0;97mt[0m[0;97me[0m[0;97mr[0m[0;97mf[0m[0;97ma[0m[0;97mc[0m[0;97me[0m[0;97m=[0m[0;97me[0m[0;97mt[0m[0;97mh[0m[0;97me[0m[0;97mr[0m[0;97m2[0m
+     [0;90;1m•[0m            [0;91m┬[0m[0;91m─[0m[0;91m─[0m 
+     [0;90;1m•[0m            [0;91m╰╸[0m [0;91mused here[0m
+     [0;90;1m•[0m
+[0;90;1m   5 │[0m [0;97ma[0m[0;97md[0m[0;97md[0m[0;97m [0m[0;97mn[0m[0;97ma[0m[0;97mm[0m[0;97me[0m[0;97m=[0m[0;34;1ml[0m[0;34;1ma[0m[0;34;1mn[0m
+     [0;90;1m•[0m          [0;34m┬[0m[0;34m─[0m[0;34m─[0m
+     [0;90;1m•[0m          [0;34m╰╸[0m [0;34mnot created until here[0m
+     [0;90;1m•[0m
+     [0;90;1m│[0m [0;96mNote: The import runs top to bottom, so this fails while running and takes everything below it with it.[0m
+[0;90;1m─────╯[0m
+
+[0;91;1m[error use-before-definition][0m: This uses lan before the line that creates it.
+     [0;90;1m╭──▶[0m [0;32;1muse-before-definition.rsc@3:12-3:15[0m
+     [0;90;1m│[0m
+[0;90;1m   3 │[0m [0;97ma[0m[0;97md[0m[0;97md[0m[0;97m [0m[0;97mb[0m[0;97mr[0m[0;97mi[0m[0;97md[0m[0;97mg[0m[0;97me[0m[0;97m=[0m[0;91;1ml[0m[0;91;1ma[0m[0;91;1mn[0m[0;97m [0m[0;97mi[0m[0;97mn[0m[0;97mt[0m[0;97me[0m[0;97mr[0m[0;97mf[0m[0;97ma[0m[0;97mc[0m[0;97me[0m[0;97m=[0m[0;97me[0m[0;97mt[0m[0;97mh[0m[0;97me[0m[0;97mr[0m[0;97m3[0m
+     [0;90;1m•[0m            [0;91m┬[0m[0;91m─[0m[0;91m─[0m 
+     [0;90;1m•[0m            [0;91m╰╸[0m [0;91mused here[0m
+     [0;90;1m•[0m
+[0;90;1m   5 │[0m [0;97ma[0m[0;97md[0m[0;97md[0m[0;97m [0m[0;97mn[0m[0;97ma[0m[0;97mm[0m[0;97me[0m[0;97m=[0m[0;34;1ml[0m[0;34;1ma[0m[0;34;1mn[0m
+     [0;90;1m•[0m          [0;34m┬[0m[0;34m─[0m[0;34m─[0m
+     [0;90;1m•[0m          [0;34m╰╸[0m [0;34mnot created until here[0m
+     [0;90;1m•[0m
+     [0;90;1m│[0m [0;96mNote: The import runs top to bottom, so this fails while running and takes everything below it with it.[0m
+[0;90;1m─────╯[0m
+2 problems. Do not apply this file.

@@ -1,0 +1,8 @@
+[0;91;1m[error unknown-verb][0m: Unknown command "print".
+     [0;90;1m╭──▶[0m [0;32;1munknown-verb.rsc@15:1-15:6[0m
+     [0;90;1m│[0m
+[0;90;1m  15 │[0m [0;91;1mp[0m[0;91;1mr[0m[0;91;1mi[0m[0;91;1mn[0m[0;91;1mt[0m
+     [0;90;1m•[0m [0;91m┬[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m
+     [0;90;1m•[0m [0;91m╰╸[0m [0;91mexpected add, set or remove[0m
+[0;90;1m─────╯[0m
+1 problem. Do not apply this file.

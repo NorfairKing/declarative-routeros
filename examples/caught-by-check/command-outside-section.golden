@@ -1,0 +1,10 @@
+[0;91;1m[error command-outside-section][0m: This command is not under any section.
+     [0;90;1m╭──▶[0m [0;32;1mcommand-outside-section.rsc@1:1-1:13[0m
+     [0;90;1m│[0m
+[0;90;1m   1 │[0m [0;91;1ma[0m[0;91;1md[0m[0;91;1md[0m[0;91;1m [0m[0;91;1mn[0m[0;91;1ma[0m[0;91;1mm[0m[0;91;1me[0m[0;91;1m=[0m[0;91;1ml[0m[0;91;1ma[0m[0;91;1mn[0m
+     [0;90;1m•[0m [0;91m┬[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m
+     [0;90;1m•[0m [0;91m╰╸[0m [0;91mno section was opened above this[0m
+     [0;90;1m•[0m
+     [0;90;1m│[0m [0;96mHint: Open one with a line starting in a slash, such as /interface bridge.[0m
+[0;90;1m─────╯[0m
+1 problem. Do not apply this file.

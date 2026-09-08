@@ -1,0 +1,10 @@
+[0;91;1m[error unknown-serial-port][0m: This names serial port 1. The last one on this chassis is 0.
+     [0;90;1m╭──▶[0m [0;32;1munknown-serial-port.rsc@17:1-17:19[0m
+     [0;90;1m│[0m
+[0;90;1m  17 │[0m [0;91;1ms[0m[0;91;1me[0m[0;91;1mt[0m[0;91;1m [0m[0;91;1m1[0m[0;91;1m [0m[0;91;1mn[0m[0;91;1ma[0m[0;91;1mm[0m[0;91;1me[0m[0;91;1m=[0m[0;91;1ms[0m[0;91;1me[0m[0;91;1mr[0m[0;91;1mi[0m[0;91;1ma[0m[0;91;1ml[0m[0;91;1m1[0m
+     [0;90;1m•[0m [0;91m┬[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m
+     [0;90;1m•[0m [0;91m╰╸[0m [0;91mno /port has this index[0m
+     [0;90;1m•[0m
+     [0;90;1m│[0m [0;96mNote: It fails while running, so everything below it is skipped and everything above it stays.[0m
+[0;90;1m─────╯[0m
+1 problem. Do not apply this file.

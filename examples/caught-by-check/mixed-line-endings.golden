@@ -1,0 +1,5 @@
+[0;91;1m[error mixed-line-endings][0m: Some lines end in a carriage return and some do not.
+     [0;90;1m•[0m
+     [0;90;1m│[0m [0;96mNote: 1 of 15 lines end in a carriage return. RouterOS does not mind either, but a file that is half one and half the other has been edited by something that did not know which it was, and the next thing to edit it will make a diff nobody can read.[0m
+[0;90;1m─────╯[0m
+1 problem. Do not apply this file.

@@ -1,53 +1,59 @@
 use clap::{Parser, Subcommand};
-use commands::apply::combine_to_apply_settings;
-use commands::apply::ApplyFlags;
-use commands::download::combine_to_download_settings;
-use commands::download::DownloadFlags;
-use session::combine_to_session_settings;
-use session::SessionFlags;
 use tracing_subscriber::EnvFilter;
 
 mod commands;
+mod report;
 mod session;
 
-use crate::commands::apply;
-use crate::commands::download;
+use crate::commands::download::{self, DownloadFlags};
+use crate::commands::import::{self, ImportFlags};
+use crate::commands::reset_into::{self, ResetIntoFlags};
+use crate::commands::router::{self, RouterFlags};
+use crate::commands::settle::{self, SettleFlags};
+use crate::commands::wait::{self, WaitFlags};
 
 #[derive(Debug, Clone, Parser)]
 struct Arguments {
     #[command(subcommand)]
     command: Command,
-
-    #[command(flatten)]
-    flags: SessionFlags,
 }
 
+/// Which router, per command: `router` is told by its file, the rest on the
+/// command line.
 #[derive(Debug, Clone, Subcommand)]
 enum Command {
     /// Download a system's configuration
     Download(DownloadFlags),
-    /// Apply a configuration
-    Apply(ApplyFlags),
+    /// Reset the router into one whole configuration file
+    ResetInto(ResetIntoFlags),
+    /// Import a configuration onto a running router, without resetting it
+    Import(ImportFlags),
+    /// Connect and run :put ready until the router answers
+    Wait(WaitFlags),
+    /// Read /export until it has no error comments
+    Settle(SettleFlags),
+    /// Everything for one router, from a file a flake wrote
+    Router(RouterFlags),
 }
 
 fn main() -> Result<(), ssh2::Error> {
+    report::start();
     let arguments = Arguments::parse();
-    let settings = combine_to_session_settings(arguments.flags);
 
     tracing_subscriber::fmt()
-        .with_target(false) // don't include targets
-        .with_thread_ids(false) // include the thread ID of the current thread
-        .with_thread_names(false) // include the name of the current thread
+        .with_target(false)
+        .with_thread_ids(false)
+        .with_thread_names(false)
         .with_env_filter(EnvFilter::from_default_env())
         .compact()
         .init();
 
     match arguments.command {
-        Command::Download(download_flags) => {
-            download::command(settings, combine_to_download_settings(download_flags))
-        }
-        Command::Apply(apply_flags) => {
-            apply::command(settings, combine_to_apply_settings(apply_flags))
-        }
+        Command::Download(flags) => download::command(flags),
+        Command::ResetInto(flags) => reset_into::command(flags),
+        Command::Import(flags) => import::command(flags),
+        Command::Wait(flags) => wait::command(flags),
+        Command::Settle(flags) => settle::command(flags),
+        Command::Router(flags) => router::command(flags),
     }
 }

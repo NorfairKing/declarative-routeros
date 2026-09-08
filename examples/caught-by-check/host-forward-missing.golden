@@ -1,0 +1,5 @@
+[0;91;1m[error host-forward-missing][0m: server expects tcp 2210 forwarded to it, and nothing here forwards it.
+     [0;90;1m•[0m
+     [0;90;1m│[0m [0;96mHint: Either add the rule, or stop expecting it. A machine reached on a port nothing forwards is a machine nobody can reach that way, and finding that out takes until somebody tries.[0m
+[0;90;1m─────╯[0m
+1 problem. Do not apply this file.

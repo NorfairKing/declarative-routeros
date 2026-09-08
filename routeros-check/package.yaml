@@ -1,0 +1,61 @@
+name: routeros-check
+version: 0.0.0
+
+# -Werror because an inexhaustive problemCode would let a problem lose its
+# code, and a code is what ties it to an example.
+ghc-options:
+  - -Wall
+  - -Werror
+
+library:
+  source-dirs: src
+  dependencies:
+    - aeson
+    - base
+    - bytestring
+    - containers
+    - diagnose
+    - opt-env-conf
+    - path
+    - path-io
+    - prettyprinter
+    - prettyprinter-ansi-terminal
+    - text
+
+executables:
+  routeros-check:
+    main: Main.hs
+    source-dirs: app
+    dependencies:
+      - base
+      - routeros-check
+
+tests:
+  routeros-check-test:
+    main: Spec.hs
+    source-dirs: test
+    dependencies:
+      - aeson
+      - base
+      - path
+      - path-io
+      - routeros-check
+      - sydtest
+      - text
+
+  # Separate because it boots a router per example: minutes rather than
+  # milliseconds, and it needs qemu and an image that cannot be cached.
+  routeros-check-vmtest:
+    main: Spec.hs
+    source-dirs: test-vm
+    dependencies:
+      - aeson
+      - base
+      - network
+      - path
+      - path-io
+      - process
+      - routeros-check
+      - safe-exceptions
+      - sydtest
+      - text

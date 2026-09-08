@@ -1,0 +1,11 @@
+[0;91;1m[error unknown-interface][0m: ether9 is not on this chassis, and nothing here creates it.
+     [0;90;1m╭──▶[0m [0;32;1munknown-interface.rsc@16:26-16:32[0m
+     [0;90;1m│[0m
+[0;90;1m  16 │[0m [0;97ma[0m[0;97md[0m[0;97md[0m[0;97m [0m[0;97mb[0m[0;97mr[0m[0;97mi[0m[0;97md[0m[0;97mg[0m[0;97me[0m[0;97m=[0m[0;97ml[0m[0;97ma[0m[0;97mn[0m[0;97m [0m[0;97mi[0m[0;97mn[0m[0;97mt[0m[0;97me[0m[0;97mr[0m[0;97mf[0m[0;97ma[0m[0;97mc[0m[0;97me[0m[0;97m=[0m[0;91;1me[0m[0;91;1mt[0m[0;91;1mh[0m[0;91;1me[0m[0;91;1mr[0m[0;91;1m9[0m
+     [0;90;1m•[0m                          [0;91m┬[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m
+     [0;90;1m•[0m                          [0;91m╰╸[0m [0;91mno such interface[0m
+     [0;90;1m•[0m
+     [0;90;1m│[0m [0;96mNote: The chassis is what the router answered when asked for the default name of each of its ethernet interfaces.[0m
+     [0;90;1m│[0m [0;96mHint: A bridge or a vlan has to be created above the line that uses it; hardware cannot be created at all.[0m
+[0;90;1m─────╯[0m
+1 problem. Do not apply this file.

@@ -1,0 +1,6 @@
+[{"name":"server","address":"192.168.99.10","mac":"aa:aa:aa:aa:aa:aa",
+  "forwards":[{"protocol":"tcp","port":"80"},{"protocol":"tcp","port":"443"}]},
+ {"name":"desktop","address":"192.168.99.11","mac":"bb:bb:bb:bb:bb:bb",
+  "forwards":[{"protocol":"tcp","port":"2222"}]},
+ {"name":"laptop","address":"192.168.99.12","mac":"cc:cc:cc:cc:cc:cc",
+  "forwards":[]}]

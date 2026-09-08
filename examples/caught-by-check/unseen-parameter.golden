@@ -1,0 +1,11 @@
+[0;91;1m[error unseen-parameter][0m: No export of this router names hw-offload on add under /ip firewall filter.
+     [0;90;1m╭──▶[0m [0;32;1munseen-parameter.rsc@18:1-18:61[0m
+     [0;90;1m│[0m
+[0;90;1m  18 │[0m [0;91;1ma[0m[0;91;1md[0m[0;91;1md[0m[0;91;1m [0m[0;91;1ma[0m[0;91;1mc[0m[0;91;1mt[0m[0;91;1mi[0m[0;91;1mo[0m[0;91;1mn[0m[0;91;1m=[0m[0;91;1mf[0m[0;91;1ma[0m[0;91;1ms[0m[0;91;1mt[0m[0;91;1mt[0m[0;91;1mr[0m[0;91;1ma[0m[0;91;1mc[0m[0;91;1mk[0m[0;91;1m-[0m[0;91;1mc[0m[0;91;1mo[0m[0;91;1mn[0m[0;91;1mn[0m[0;91;1me[0m[0;91;1mc[0m[0;91;1mt[0m[0;91;1mi[0m[0;91;1mo[0m[0;91;1mn[0m[0;91;1m [0m[0;91;1mc[0m[0;91;1mh[0m[0;91;1ma[0m[0;91;1mi[0m[0;91;1mn[0m[0;91;1m=[0m[0;91;1mf[0m[0;91;1mo[0m[0;91;1mr[0m[0;91;1mw[0m[0;91;1ma[0m[0;91;1mr[0m[0;91;1md[0m[0;91;1m [0m[0;91;1mh[0m[0;91;1mw[0m[0;91;1m-[0m[0;91;1mo[0m[0;91;1mf[0m[0;91;1mf[0m[0;91;1ml[0m[0;91;1mo[0m[0;91;1ma[0m[0;91;1md[0m[0;91;1m=[0m[0;91;1my[0m[0;91;1me[0m[0;91;1ms[0m
+     [0;90;1m•[0m [0;91m┬[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m
+     [0;90;1m•[0m [0;91m╰╸[0m [0;91mthis parameter may not exist here[0m
+     [0;90;1m•[0m
+     [0;90;1m│[0m [0;96mNote: A verbose export prints every parameter a command has, at its default, so a name missing from one is a name this RouterOS does not know rather than one it has no use for.[0m
+     [0;90;1m│[0m [0;96mHint: Say [untried] and why in a comment above it if this is meant to be new.[0m
+[0;90;1m─────╯[0m
+1 problem. Do not apply this file.

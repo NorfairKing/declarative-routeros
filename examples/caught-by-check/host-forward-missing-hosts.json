@@ -1,0 +1,2 @@
+[{"name":"server","address":"192.168.99.10","mac":"aa:aa:aa:aa:aa:aa",
+  "forwards":[{"protocol":"tcp","port":"2210"}]}]

@@ -1,0 +1,5 @@
+[0;91;1m[error host-interface-not-leased][0m: rehomed is declared as aa:aa:aa:aa:aa:aa, but nothing here leases that interface.
+     [0;90;1m•[0m
+     [0;90;1m│[0m [0;96mHint: Lease the interface as well as the address. Without that, a machine with two interfaces gets whichever address the router felt like handing out.[0m
+[0;90;1m─────╯[0m
+1 problem. Do not apply this file.

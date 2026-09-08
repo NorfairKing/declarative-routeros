@@ -37,6 +37,22 @@
         "type": "github"
       }
     },
+    "hopinion": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1788783089,
+        "narHash": "sha256-XravNXkh38L44dcrNUpVZgFdckoTin9T45l6PL5CNq4=",
+        "owner": "NorfairKing",
+        "repo": "hopinion",
+        "rev": "fe488c1221db7894f0f22528ec46094c2bc79503",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NorfairKing",
+        "repo": "hopinion",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1780203844,
@@ -91,6 +107,7 @@
     },
     "root": {
       "inputs": {
+        "hopinion": "hopinion",
         "nixpkgs": "nixpkgs",
         "pre-commit-hooks": "pre-commit-hooks"
       }

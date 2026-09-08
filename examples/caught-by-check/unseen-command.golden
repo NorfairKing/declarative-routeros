@@ -1,0 +1,11 @@
+[0;91;1m[error unseen-command][0m: No export of this router has add under /ip service.
+     [0;90;1m╭──▶[0m [0;32;1munseen-command.rsc@17:1-17:28[0m
+     [0;90;1m│[0m
+[0;90;1m  17 │[0m [0;91;1ma[0m[0;91;1md[0m[0;91;1md[0m[0;91;1m [0m[0;91;1ma[0m[0;91;1md[0m[0;91;1md[0m[0;91;1mr[0m[0;91;1me[0m[0;91;1ms[0m[0;91;1ms[0m[0;91;1m=[0m[0;91;1m1[0m[0;91;1m9[0m[0;91;1m2[0m[0;91;1m.[0m[0;91;1m1[0m[0;91;1m6[0m[0;91;1m8[0m[0;91;1m.[0m[0;91;1m9[0m[0;91;1m9[0m[0;91;1m.[0m[0;91;1m0[0m[0;91;1m/[0m[0;91;1m2[0m[0;91;1m4[0m
+     [0;90;1m•[0m [0;91m┬[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m
+     [0;90;1m•[0m [0;91m╰╸[0m [0;91mthe menu is known, this command is not[0m
+     [0;90;1m•[0m
+     [0;90;1m│[0m [0;96mNote: An export only ever uses the command it needs to say what the router is set to, which for a menu of settings is set and for a menu of items is add. So this says the router has never been asked this, rather than that it would refuse.[0m
+     [0;90;1m│[0m [0;96mHint: Say [untried] and why in a comment above it if this is meant to be new.[0m
+[0;90;1m─────╯[0m
+1 problem. Do not apply this file.

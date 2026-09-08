@@ -1,0 +1,270 @@
+#!/usr/bin/env expect
+#
+# Boot a MikroTik CHR under qemu, dress it as the chassis, and import the
+# configuration file. Exits non-zero if the import says anything at all.
+
+set qemudir      $env(VMTEST_QEMUDIR)
+set disk         $env(VMTEST_DISK)
+set tftpdir      $env(VMTEST_TFTPDIR)
+set ifaces       $env(VMTEST_INTERFACES)
+set serials      $env(VMTEST_SERIALS)
+set memory       $env(VMTEST_MEMORY)
+
+# The deployment tool talks ssh from the host, and nothing else here does.
+set sshport      $env(VMTEST_SSHPORT)
+set hold         $env(VMTEST_HOLD)
+
+set PW "vmtest-password"
+set timeout 900
+set errors {}
+
+proc fail {msg} {
+  global errors
+  lappend errors $msg
+  puts "\n!!! $msg"
+}
+
+proc die {msg} {
+  fail $msg
+  puts "\n>>> FAILED"
+  exit 1
+}
+
+# RouterOS redraws the input line on every keystroke, so a pattern loop would
+# match its own echo. `admin+ct` asks for a plain terminal.
+proc rosLogin {first} {
+  global PW
+  expect {
+    -nocase -re {login: } { }
+    timeout { die "no login prompt" }
+    eof     { die "qemu exited before the login prompt" }
+  }
+  send "admin+ct\r"
+  expect {
+    -nocase -re {password: } { }
+    timeout { die "no password prompt" }
+  }
+  if {$first} { send "\r" } else { send "$PW\r" }
+  expect {
+    -nocase -re {license\? \[Y/n\]} { send "n\r"; exp_continue }
+    -re {new password>}    { }
+    -re {\] > *[\r ]*$}     { return }
+    timeout { die "no prompt after logging in" }
+  }
+  send "$PW\r"
+  expect {
+    -re {repeat new password>} { }
+    timeout { die "no repeated-password prompt" }
+  }
+  send "$PW\r"
+  expect {
+    -re {\] > *[\r ]*$} { }
+    timeout { die "no prompt after setting the password" }
+  }
+}
+
+# A reset shows a login prompt before it actually reboots, and only the firmware
+# speaks in between.
+proc rosWaitReboot {} {
+  expect {
+    -re {Load system|EFI stub|BdsDxe} { }
+    timeout { die "the router did not reboot" }
+    eof     { die "qemu exited while rebooting" }
+  }
+}
+
+proc cmd {c} {
+  send "$c\r"
+  expect {
+    -re {\] > *[\r ]*$} { return $expect_out(buffer) }
+    timeout { fail "timed out running: $c"; return "" }
+    eof     { die "qemu exited running: $c" }
+  }
+}
+
+# Deliberately broad: over-matching costs a test that fails loudly,
+# under-matching costs a configuration that reaches a router. Safe to be this
+# broad because success is asserted separately, by RouterOS saying it executed
+# the file.
+set complaint {error|fail|cannot|can not|could not|unable|no such|not found|bad command|unknown|expected |invalid|denied|not allowed|syntax|refused|timeout|timed out}
+
+proc cmdMustSucceed {c} {
+  global complaint
+  set out [cmd $c]
+  if {[regexp -nocase -line "^.*(?:$complaint).*\$" $out match]} {
+    die "setting the vm up failed at `$c`: [string trim $match]"
+  }
+  return $out
+}
+
+# RouterOS echoes the command and wraps at the terminal width, so a bare number
+# cannot be told from one in the echo. The marker counts up, so a poll cannot
+# read a stale answer.
+set countingFrom 0
+
+proc rosCount {menu} {
+  global countingFrom
+  incr countingFrom
+  set marker "N$countingFrom"
+  set out [cmd [format {:put ("%s" . "=" . [:tostr [:len [%s find]]])} $marker $menu]]
+  if {[regexp "$marker=(\\d+)" $out -> n]} { return $n }
+  return -1
+}
+
+set interfaces [split $ifaces " "]
+
+set args {}
+for {set i 0} {$i < [llength $interfaces]} {incr i} {
+  lappend args "-device" "virtio-net-pci,netdev=n$i"
+  if {$i == 0} {
+    # Its tftp server is how the configuration reaches the router.
+    if {$sshport != 0} {
+      lappend args "-netdev" "user,id=n0,tftp=$tftpdir,hostfwd=tcp:127.0.0.1:$sshport-:22"
+    } else {
+      lappend args "-netdev" "user,id=n0,tftp=$tftpdir"
+    }
+  } else {
+    # A network each would mean a dhcp server each, and then which interface the
+    # router is addressed on is a race.
+    lappend args "-netdev" "hubport,id=n$i,hubid=$i"
+  }
+}
+# The rest exist so /port has as many entries as the chassis does.
+lappend args "-serial" "mon:stdio"
+for {set i 1} {$i < $serials} {incr i} {
+  lappend args "-serial" "null"
+}
+
+# Emulated, so no /dev/kvm and it runs inside a nix build.
+eval spawn $qemudir/bin/qemu-system-aarch64 -machine virt -cpu cortex-a72 -smp 4 -m $memory \
+  -drive if=pflash,format=raw,unit=0,readonly=on,file=$qemudir/share/qemu/edk2-aarch64-code.fd \
+  -drive file=$disk,format=raw,if=virtio \
+  -nographic -display none $args
+
+puts "\n>>> waiting for the router to boot"
+rosLogin 1
+puts "\n>>> logged in"
+
+# Under emulation the interfaces show up well after the console is ready. Every
+# iteration is a console round trip, so the delay is slack on top of that and
+# the count is what decides how long the wait is.
+set wanted [llength $interfaces]
+for {set try 0} {$try < 300} {incr try} {
+  if {[rosCount "/interface ethernet"] >= $wanted} break
+  cmd ":delay 500ms"
+}
+set found [rosCount "/interface ethernet"]
+if {$found != $wanted} {
+  die "the vm has $found ethernet interfaces, the chassis has $wanted"
+}
+
+set ports [rosCount "/port"]
+if {$ports != $serials} {
+  die "the vm has $ports serial ports, the chassis has $serials"
+}
+
+# Nothing else from here on: whatever asked for this router does the resetting
+# and the importing itself, over ssh.
+#
+# No timeout on the wait: the router lives exactly as long as whatever is
+# driving it holds this open, and one that goes away on its own takes the test
+# with it.
+if {$hold != 0} {
+  puts "\n>>> ready for ssh on port $sshport, password $PW"
+  flush stdout
+  expect_user -timeout -1 -re "\n"
+  send "\x01x"
+  expect eof
+  exit 0
+}
+
+# Files survive a reset, configuration does not, and afterwards there is no way
+# to fetch anything.
+puts "\n>>> uploading the configuration"
+set management [lindex $interfaces 0]
+for {set try 0} {$try < 300} {incr try} {
+  if {[regexp {bound} [cmd "/ip dhcp-client print without-paging"]]} break
+  cmd ":delay 500ms"
+}
+if {![regexp {bound} [cmd "/ip dhcp-client print without-paging"]]} {
+  die "the vm never got an address on $management to fetch the configuration over"
+}
+
+# The first fetch after a lease often reports "failed to send request".
+set fetched 0
+for {set try 0} {$try < 40} {incr try} {
+  set out [cmd "/tool fetch address=10.0.2.2 mode=tftp src-path=configuration.rsc dst-path=configuration.rsc"]
+  if {[regexp {status: finished} $out]} { set fetched 1; break }
+  cmd ":delay 500ms"
+}
+if {!$fetched} {
+  die "the configuration never reached the vm"
+}
+
+# Matched unanchored because RouterOS follows the question with carriage
+# returns, and how many have arrived is a race.
+puts "\n>>> resetting the router"
+send "/system reset-configuration keep-users=yes no-defaults=yes\r"
+expect {
+  -nocase -re {\[y/N\]} { send "y\r" }
+  timeout { die "no confirmation prompt for the reset" }
+}
+rosWaitReboot
+rosLogin 0
+puts "\n>>> logged in after the reset"
+
+for {set try 0} {$try < 300} {incr try} {
+  if {[rosCount "/interface ethernet"] >= $wanted} break
+  cmd ":delay 500ms"
+}
+
+# CHR calls its interfaces ether1..etherN whatever it stands in for, and a reset
+# undoes any renaming. The configuration file is never touched.
+puts "\n>>> naming the interfaces after the chassis"
+for {set i 0} {$i < [llength $interfaces]} {incr i} {
+  set want [lindex $interfaces $i]
+  set have "ether[expr {$i + 1}]"
+  if {$want ne $have} {
+    cmdMustSucceed [format {/interface ethernet set [ find default-name=%s ] name=%s} $have $want]
+  }
+}
+
+puts "\n>>> importing the configuration"
+set out [cmd "/import file=configuration.rsc"]
+if {[regexp -nocase -line "^.*(?:$complaint).*\$" $out match]} {
+  fail "the import was rejected: [string trim $match]"
+}
+if {![regexp {(?i)executed successfully} $out]} {
+  fail "the import did not report success"
+}
+
+puts "\n>>> what the router ended up with"
+foreach menu {
+  "/interface bridge"
+  "/interface bridge port"
+  "/ip address"
+  "/ip pool"
+  "/ip dhcp-server"
+  "/ip dhcp-server network"
+  "/ip dhcp-server lease"
+  "/ip firewall filter"
+  "/ip firewall nat"
+  "/ipv6 address"
+  "/ipv6 dhcp-client"
+  "/ipv6 dhcp-server"
+} {
+  puts "$menu: [rosCount $menu]"
+}
+cmd "/system identity print"
+cmd "/ip address print without-paging"
+
+send "\x01x"
+expect eof
+
+if {[llength $errors] > 0} {
+  puts "\n>>> FAILED"
+  foreach e $errors { puts "  - $e" }
+  exit 1
+}
+puts "\n>>> the configuration imported cleanly"
+exit 0

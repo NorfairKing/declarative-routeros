@@ -1,0 +1,20 @@
+[0;91;1m[error not-redeployable][0m: Nothing here gives the router an address, so a failed deployment could not be followed by another.
+     [0;90;1m•[0m
+     [0;90;1m│[0m [0;96mNote: Applying this file resets the router and replays it. Being reachable is not enough: a machine with no address of its own cannot reach the router either, so the file has to bring up the bridge, its ports, the router's own address, an address pool, a dhcp server and that server's network.[0m
+[0;90;1m─────╯[0m
+
+[0;91;1m[error not-redeployable][0m: Nothing here makes an address pool, so a failed deployment could not be followed by another.
+     [0;90;1m•[0m
+     [0;90;1m│[0m [0;96mNote: Applying this file resets the router and replays it. Being reachable is not enough: a machine with no address of its own cannot reach the router either, so the file has to bring up the bridge, its ports, the router's own address, an address pool, a dhcp server and that server's network.[0m
+[0;90;1m─────╯[0m
+
+[0;91;1m[error not-redeployable][0m: Nothing here runs a dhcp server, so a failed deployment could not be followed by another.
+     [0;90;1m•[0m
+     [0;90;1m│[0m [0;96mNote: Applying this file resets the router and replays it. Being reachable is not enough: a machine with no address of its own cannot reach the router either, so the file has to bring up the bridge, its ports, the router's own address, an address pool, a dhcp server and that server's network.[0m
+[0;90;1m─────╯[0m
+
+[0;91;1m[error not-redeployable][0m: Nothing here gives that server a network, so a failed deployment could not be followed by another.
+     [0;90;1m•[0m
+     [0;90;1m│[0m [0;96mNote: Applying this file resets the router and replays it. Being reachable is not enough: a machine with no address of its own cannot reach the router either, so the file has to bring up the bridge, its ports, the router's own address, an address pool, a dhcp server and that server's network.[0m
+[0;90;1m─────╯[0m
+4 problems. Do not apply this file.

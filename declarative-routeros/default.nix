@@ -1,6 +1,4 @@
-{ stdenv
-, rustPlatform
-  # System dependencies
+{ rustPlatform
 , pkg-config
 , openssl
 }:
@@ -19,4 +17,6 @@ rustPlatform.buildRustPackage {
   cargoLock = {
     lockFile = ./Cargo.lock;
   };
+
+  meta.mainProgram = "declarative-routeros";
 }

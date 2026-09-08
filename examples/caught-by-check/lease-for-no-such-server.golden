@@ -1,0 +1,11 @@
+[0;91;1m[error lease-for-no-such-server][0m: No dhcp server here is called dhcp2.
+     [0;90;1m╭──▶[0m [0;32;1mlease-for-no-such-server.rsc@16:64-16:69[0m
+     [0;90;1m│[0m
+[0;90;1m  16 │[0m [0;97ma[0m[0;97md[0m[0;97md[0m[0;97m [0m[0;97ma[0m[0;97md[0m[0;97md[0m[0;97mr[0m[0;97me[0m[0;97ms[0m[0;97ms[0m[0;97m=[0m[0;97m1[0m[0;97m9[0m[0;97m2[0m[0;97m.[0m[0;97m1[0m[0;97m6[0m[0;97m8[0m[0;97m.[0m[0;97m9[0m[0;97m9[0m[0;97m.[0m[0;97m1[0m[0;97m0[0m[0;97m [0m[0;97mm[0m[0;97ma[0m[0;97mc[0m[0;97m-[0m[0;97ma[0m[0;97md[0m[0;97md[0m[0;97mr[0m[0;97me[0m[0;97ms[0m[0;97ms[0m[0;97m=[0m[0;97ma[0m[0;97ma[0m[0;97m:[0m[0;97ma[0m[0;97ma[0m[0;97m:[0m[0;97ma[0m[0;97ma[0m[0;97m:[0m[0;97ma[0m[0;97ma[0m[0;97m:[0m[0;97ma[0m[0;97ma[0m[0;97m:[0m[0;97ma[0m[0;97ma[0m[0;97m [0m[0;97ms[0m[0;97me[0m[0;97mr[0m[0;97mv[0m[0;97me[0m[0;97mr[0m[0;97m=[0m[0;91;1md[0m[0;91;1mh[0m[0;91;1mc[0m[0;91;1mp[0m[0;91;1m2[0m
+     [0;90;1m•[0m                                                                [0;91m┬[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m
+     [0;90;1m•[0m                                                                [0;91m╰╸[0m [0;91mnothing creates this[0m
+     [0;90;1m•[0m
+     [0;90;1m│[0m [0;96mNote: A dhcp server is never hardware: an interface a file does not create may still be on the chassis, and a server a file does not create does not exist. These leases are in the half a reset is paired with, so one that will not take costs the whole of it.[0m
+     [0;90;1m│[0m [0;96mHint: Name one that /ip dhcp-server creates above this.[0m
+[0;90;1m─────╯[0m
+1 problem. Do not apply this file.

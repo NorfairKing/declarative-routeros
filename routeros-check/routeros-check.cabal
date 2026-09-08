@@ -1,0 +1,93 @@
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.38.3.
+--
+-- see: https://github.com/sol/hpack
+
+name:           routeros-check
+version:        0.0.0
+build-type:     Simple
+
+library
+  exposed-modules:
+      RouterOS.Check
+      RouterOS.Check.Chassis
+      RouterOS.Check.Command
+      RouterOS.Check.File
+      RouterOS.Check.Location
+      RouterOS.Check.OptParse
+      RouterOS.Check.Problem
+      RouterOS.Check.Run
+      RouterOS.Check.Validation
+      RouterOS.Check.Vocabulary
+  other-modules:
+      Paths_routeros_check
+  hs-source-dirs:
+      src
+  ghc-options: -Wall -Werror
+  build-depends:
+      aeson
+    , base
+    , bytestring
+    , containers
+    , diagnose
+    , opt-env-conf
+    , path
+    , path-io
+    , prettyprinter
+    , prettyprinter-ansi-terminal
+    , text
+  default-language: Haskell2010
+
+executable routeros-check
+  main-is: Main.hs
+  other-modules:
+      Paths_routeros_check
+  hs-source-dirs:
+      app
+  ghc-options: -Wall -Werror
+  build-depends:
+      base
+    , routeros-check
+  default-language: Haskell2010
+
+test-suite routeros-check-test
+  type: exitcode-stdio-1.0
+  main-is: Spec.hs
+  other-modules:
+      RouterOS.CheckSpec
+      Paths_routeros_check
+  hs-source-dirs:
+      test
+  ghc-options: -Wall -Werror
+  build-depends:
+      aeson
+    , base
+    , path
+    , path-io
+    , routeros-check
+    , sydtest
+    , text
+  default-language: Haskell2010
+
+test-suite routeros-check-vmtest
+  type: exitcode-stdio-1.0
+  main-is: Spec.hs
+  other-modules:
+      RouterOS.ToolSpec
+      Paths_routeros_check
+  hs-source-dirs:
+      test-vm
+  ghc-options: -Wall -Werror
+  build-depends:
+      aeson
+    , base
+    , network
+    , path
+    , path-io
+    , process
+    , routeros-check
+    , safe-exceptions
+    , sydtest
+    , text
+  default-language: Haskell2010

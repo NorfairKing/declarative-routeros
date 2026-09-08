@@ -1,0 +1,36 @@
+[0;91;1m[error subnet-router-anycast][0m: This takes an address from a pool with no host part, which is the subnet-router anycast address.
+     [0;90;1m╭──▶[0m [0;32;1msubnet-router-anycast.rsc@18:1-18:35[0m
+     [0;90;1m│[0m
+[0;90;1m  18 │[0m [0;91;1ma[0m[0;91;1md[0m[0;91;1md[0m[0;91;1m [0m[0;91;1mf[0m[0;91;1mr[0m[0;91;1mo[0m[0;91;1mm[0m[0;91;1m-[0m[0;91;1mp[0m[0;91;1mo[0m[0;91;1mo[0m[0;91;1ml[0m[0;91;1m=[0m[0;91;1mv[0m[0;91;1m6[0m[0;91;1mp[0m[0;91;1mo[0m[0;91;1mo[0m[0;91;1ml[0m[0;91;1m [0m[0;91;1mi[0m[0;91;1mn[0m[0;91;1mt[0m[0;91;1me[0m[0;91;1mr[0m[0;91;1mf[0m[0;91;1ma[0m[0;91;1mc[0m[0;91;1me[0m[0;91;1m=[0m[0;91;1ml[0m[0;91;1ma[0m[0;91;1mn[0m
+     [0;90;1m•[0m [0;91m┬[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m
+     [0;90;1m•[0m [0;91m╰╸[0m [0;91man address= that is all zeroes, or none at all, which means the same[0m
+     [0;90;1m•[0m
+     [0;90;1m│[0m [0;96mNote: Every IPv6 router on a link has to answer for that address, so claiming it fails duplicate address detection and the interface ends up with no valid address at all. Nothing else stops working: the router keeps its own connectivity and only the clients lose theirs.[0m
+     [0;90;1m│[0m [0;96mNote: A router that already holds the address never runs detection again, so a configuration doing this works until the first time it is applied to a router that has been reset.[0m
+     [0;90;1m│[0m [0;96mHint: Give it a host part: address=::1.[0m
+[0;90;1m─────╯[0m
+
+[0;91;1m[error subnet-router-anycast][0m: This takes an address from a pool with no host part, which is the subnet-router anycast address.
+     [0;90;1m╭──▶[0m [0;32;1msubnet-router-anycast.rsc@19:1-19:47[0m
+     [0;90;1m│[0m
+[0;90;1m  19 │[0m [0;91;1ma[0m[0;91;1md[0m[0;91;1md[0m[0;91;1m [0m[0;91;1ma[0m[0;91;1md[0m[0;91;1md[0m[0;91;1mr[0m[0;91;1me[0m[0;91;1ms[0m[0;91;1ms[0m[0;91;1m=[0m[0;91;1m:[0m[0;91;1m:[0m[0;91;1m0[0m[0;91;1m [0m[0;91;1mf[0m[0;91;1mr[0m[0;91;1mo[0m[0;91;1mm[0m[0;91;1m-[0m[0;91;1mp[0m[0;91;1mo[0m[0;91;1mo[0m[0;91;1ml[0m[0;91;1m=[0m[0;91;1mv[0m[0;91;1m6[0m[0;91;1mp[0m[0;91;1mo[0m[0;91;1mo[0m[0;91;1ml[0m[0;91;1m [0m[0;91;1mi[0m[0;91;1mn[0m[0;91;1mt[0m[0;91;1me[0m[0;91;1mr[0m[0;91;1mf[0m[0;91;1ma[0m[0;91;1mc[0m[0;91;1me[0m[0;91;1m=[0m[0;91;1ml[0m[0;91;1ma[0m[0;91;1mn[0m
+     [0;90;1m•[0m [0;91m┬[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m
+     [0;90;1m•[0m [0;91m╰╸[0m [0;91man address= that is all zeroes, or none at all, which means the same[0m
+     [0;90;1m•[0m
+     [0;90;1m│[0m [0;96mNote: Every IPv6 router on a link has to answer for that address, so claiming it fails duplicate address detection and the interface ends up with no valid address at all. Nothing else stops working: the router keeps its own connectivity and only the clients lose theirs.[0m
+     [0;90;1m│[0m [0;96mNote: A router that already holds the address never runs detection again, so a configuration doing this works until the first time it is applied to a router that has been reset.[0m
+     [0;90;1m│[0m [0;96mHint: Give it a host part: address=::1.[0m
+[0;90;1m─────╯[0m
+
+[0;91;1m[error subnet-router-anycast][0m: This takes an address from a pool with no host part, which is the subnet-router anycast address.
+     [0;90;1m╭──▶[0m [0;32;1msubnet-router-anycast.rsc@20:1-20:59[0m
+     [0;90;1m│[0m
+[0;90;1m  20 │[0m [0;91;1ma[0m[0;91;1md[0m[0;91;1md[0m[0;91;1m [0m[0;91;1ma[0m[0;91;1md[0m[0;91;1md[0m[0;91;1mr[0m[0;91;1me[0m[0;91;1ms[0m[0;91;1ms[0m[0;91;1m=[0m[0;91;1m0[0m[0;91;1m:[0m[0;91;1m0[0m[0;91;1m:[0m[0;91;1m0[0m[0;91;1m:[0m[0;91;1m0[0m[0;91;1m:[0m[0;91;1m0[0m[0;91;1m:[0m[0;91;1m0[0m[0;91;1m:[0m[0;91;1m0[0m[0;91;1m:[0m[0;91;1m0[0m[0;91;1m [0m[0;91;1mf[0m[0;91;1mr[0m[0;91;1mo[0m[0;91;1mm[0m[0;91;1m-[0m[0;91;1mp[0m[0;91;1mo[0m[0;91;1mo[0m[0;91;1ml[0m[0;91;1m=[0m[0;91;1mv[0m[0;91;1m6[0m[0;91;1mp[0m[0;91;1mo[0m[0;91;1mo[0m[0;91;1ml[0m[0;91;1m [0m[0;91;1mi[0m[0;91;1mn[0m[0;91;1mt[0m[0;91;1me[0m[0;91;1mr[0m[0;91;1mf[0m[0;91;1ma[0m[0;91;1mc[0m[0;91;1me[0m[0;91;1m=[0m[0;91;1ml[0m[0;91;1ma[0m[0;91;1mn[0m
+     [0;90;1m•[0m [0;91m┬[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m
+     [0;90;1m•[0m [0;91m╰╸[0m [0;91man address= that is all zeroes, or none at all, which means the same[0m
+     [0;90;1m•[0m
+     [0;90;1m│[0m [0;96mNote: Every IPv6 router on a link has to answer for that address, so claiming it fails duplicate address detection and the interface ends up with no valid address at all. Nothing else stops working: the router keeps its own connectivity and only the clients lose theirs.[0m
+     [0;90;1m│[0m [0;96mNote: A router that already holds the address never runs detection again, so a configuration doing this works until the first time it is applied to a router that has been reset.[0m
+     [0;90;1m│[0m [0;96mHint: Give it a host part: address=::1.[0m
+[0;90;1m─────╯[0m
+3 problems. Do not apply this file.

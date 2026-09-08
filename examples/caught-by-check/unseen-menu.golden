@@ -1,0 +1,12 @@
+[0;91;1m[error unseen-menu][0m: No export of this router mentions /interface wireless security-profiles.
+     [0;90;1m╭──▶[0m [0;32;1munseen-menu.rsc@18:1-18:54[0m
+     [0;90;1m│[0m
+[0;90;1m  18 │[0m [0;91;1ms[0m[0;91;1me[0m[0;91;1mt[0m[0;91;1m [0m[0;91;1m[[0m[0;91;1m [0m[0;91;1mf[0m[0;91;1mi[0m[0;91;1mn[0m[0;91;1md[0m[0;91;1m [0m[0;91;1md[0m[0;91;1me[0m[0;91;1mf[0m[0;91;1ma[0m[0;91;1mu[0m[0;91;1ml[0m[0;91;1mt[0m[0;91;1m=[0m[0;91;1my[0m[0;91;1me[0m[0;91;1ms[0m[0;91;1m [0m[0;91;1m][0m[0;91;1m [0m[0;91;1ms[0m[0;91;1mu[0m[0;91;1mp[0m[0;91;1mp[0m[0;91;1ml[0m[0;91;1mi[0m[0;91;1mc[0m[0;91;1ma[0m[0;91;1mn[0m[0;91;1mt[0m[0;91;1m-[0m[0;91;1mi[0m[0;91;1md[0m[0;91;1me[0m[0;91;1mn[0m[0;91;1mt[0m[0;91;1mi[0m[0;91;1mt[0m[0;91;1my[0m[0;91;1m=[0m[0;91;1mM[0m[0;91;1mi[0m[0;91;1mk[0m[0;91;1mr[0m[0;91;1mo[0m[0;91;1mT[0m[0;91;1mi[0m[0;91;1mk[0m
+     [0;90;1m•[0m [0;91m┬[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m[0;91m─[0m
+     [0;90;1m•[0m [0;91m╰╸[0m [0;91mthis router may have no such menu[0m
+     [0;90;1m•[0m
+     [0;90;1m│[0m [0;96mNote: A menu RouterOS does not have is a compile error, and /import compiles the whole file before it runs any of it, so the router would come up with nothing at all applied.[0m
+     [0;90;1m│[0m [0;96mNote: An export prints no menu that has nothing in it, so this says the router has never had anything here rather than that it could not.[0m
+     [0;90;1m│[0m [0;96mHint: If this is meant to be new, say so in a comment above it: [untried] and why. Setting it on the router by hand and downloading again is the other way, and the stronger one.[0m
+[0;90;1m─────╯[0m
+1 problem. Do not apply this file.
