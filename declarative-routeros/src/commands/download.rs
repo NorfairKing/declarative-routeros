@@ -1,5 +1,6 @@
 use std::io::prelude::*;
 use std::path::Path;
+use std::process::exit;
 use std::{fs::File, path::PathBuf};
 
 use clap::Args;
@@ -24,7 +25,18 @@ pub struct DownloadSettings {
     chassis_file: PathBuf,
 }
 
+/// Fatal, and before anyone is asked for a password: the directory is where
+/// the record is kept, so a deployment pointed at one that is not here is one
+/// being run from somewhere else.
 pub fn download_into(directory: &Path) -> DownloadSettings {
+    if !directory.is_dir() {
+        report::problem(&format!(
+            "There is no {} here to write this into.",
+            directory.display()
+        ));
+        report::detail("Run this from the directory that holds it.");
+        exit(1);
+    }
     DownloadSettings {
         output_file: directory.join("export.rsc"),
         verbose_output_file: directory.join("export-verbose.rsc"),
@@ -33,8 +45,11 @@ pub fn download_into(directory: &Path) -> DownloadSettings {
 }
 
 pub fn command(flags: DownloadFlags) -> Result<(), ssh2::Error> {
+    // Read before connecting: what it has to say about the directory is worth
+    // more before a password has been asked for than after.
+    let settings = download_into(&flags.into);
     let session = connect(combine_to_session_settings(flags.session))?;
-    download(download_into(&flags.into), &session)
+    download(settings, &session)
 }
 
 pub fn command_with(
