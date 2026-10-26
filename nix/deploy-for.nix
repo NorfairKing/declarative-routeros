@@ -32,7 +32,8 @@ let
   # The checker writes no halves for a file it has anything to say about.
   checked = routeros-checked-for { inherit name configuration hosts chassis export; };
 
-  # Depended on, not run: no deployment exists for a file RouterOS refused.
+  # Built before the deployment is, and not referred to by it: no deployment
+  # exists for a file RouterOS refused.
   vmtested = routeros-vmtest-check-for {
     inherit name chassis;
     configuration = "${checked}/configuration.rsc";
@@ -49,6 +50,10 @@ in
 runCommand "deploy-${name}"
 {
   nativeBuildInputs = [ makeWrapper ];
+  # Named in the derivation rather than used in the build, which is what makes
+  # nix build it first: a check is something that has to have passed, not
+  # something the command then has to carry around.
+  requiredChecks = [ vmtested ];
   meta = {
     description = "Apply ${name}'s configuration, in the two halves that keep it reachable";
     mainProgram = "deploy-${name}";
