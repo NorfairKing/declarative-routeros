@@ -43,6 +43,10 @@ struct Router {
     rest: PathBuf,
     checked_against: PathBuf,
     record_into: PathBuf,
+    /// A command, not a path to run through this one: what reads the router is
+    /// built from no configuration, so it is there to be named even when this
+    /// is pointing at a router the checks no longer answer for.
+    download_with: String,
 }
 
 pub fn command(flags: RouterFlags) -> Result<(), ssh2::Error> {
@@ -57,6 +61,14 @@ pub fn command(flags: RouterFlags) -> Result<(), ssh2::Error> {
         username: router.username.clone(),
         router_address: SocketAddr::new(router.address, router.port),
     };
+    // Spelled out rather than taken from argv0: what a flake builds is this
+    // program with these flags already on it, so the program on its own is not
+    // a command that names a router.
+    let invocation = format!(
+        "{} router --settings {}",
+        report::this_command(),
+        flags.settings.display()
+    );
     match flags.action.unwrap_or(Action::Apply) {
         Action::Apply => apply::command(
             session,
@@ -66,6 +78,8 @@ pub fn command(flags: RouterFlags) -> Result<(), ssh2::Error> {
                 rest: router.rest,
                 checked_against: router.checked_against,
                 record_into: router.record_into,
+                download_with: router.download_with,
+                invocation,
                 asking: if flags.yes {
                     apply::Asking::AlreadyAnswered
                 } else {

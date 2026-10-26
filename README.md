@@ -108,12 +108,18 @@ nix build .#deploy-router   # runs the checks
 nix run .#deploy-router     # deploys
 ```
 
-If a deployment stops half way, the same command has the two halves of it:
+If a deployment stops half way, the two halves of it are commands of their own,
+told the same router:
 
 ``` console
-nix run .#deploy-router -- download     # reads the router into the record
-nix run .#deploy-router -- import-rest  # imports the second half, no reset
+nix run .#deploy-router.download     # reads the router into the record
+nix run .#deploy-router.import-rest  # imports the second half, no reset
 ```
+
+`.download` is built from the tool and the address, and from no configuration,
+so it is there when the checks refuse the file. That is when you need it: a
+router that has changed since the checks read it is one the deployment stops
+on, and reading it again is how the checks get something to answer for.
 
 ### Hacking
 

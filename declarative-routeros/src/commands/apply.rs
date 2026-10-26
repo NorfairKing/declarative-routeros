@@ -13,6 +13,14 @@ pub struct ApplySettings {
     pub rest: PathBuf,
     pub checked_against: PathBuf,
     pub record_into: PathBuf,
+    /// What to run to read the router, whole enough to paste. Its own command
+    /// rather than an action of this one, because this one is built from a
+    /// configuration and reading the router must not be.
+    pub download_with: String,
+    /// This deployment, spelled out: the program this is reached through adds
+    /// flags of its own before anything a person types, so an action of it is
+    /// not something you can ask for by naming the program.
+    pub invocation: String,
     pub asking: Asking,
 }
 
@@ -64,7 +72,7 @@ pub fn command(
     let checked = contents_of(&apply_settings.checked_against);
     if live != checked {
         report::problem(&format!("{} is not the router these checks read.", apply_settings.name));
-        report::detail(&format!("Download it again: {} download", report::this_command()));
+        report::detail(&format!("Download it again: {}", apply_settings.download_with));
         report::detail("Then build this again.");
         exit(1);
     }
@@ -107,7 +115,7 @@ pub fn command(
             import::import_settings_for(&apply_settings.rest),
         )? {
             report::detail(&format!("{} has the prefix and not the rest.", apply_settings.name));
-            report::detail(&format!("Finish it with: {} import-rest", report::this_command()));
+            report::detail(&format!("Finish it with: {} import-rest", apply_settings.invocation));
             exit(1);
         }
       }

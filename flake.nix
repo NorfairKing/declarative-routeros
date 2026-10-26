@@ -48,6 +48,8 @@
 
         inherit (pkgs.declarative-routeros) routeros-check;
 
+        routeros-deploy-selftest = pkgs.declarative-routeros.deploySelftest;
+
         hopinion = hopinionPkgs.hopinion.makeHopinionCheck {
           src = ./.;
           packages = [ "routeros-check" ];

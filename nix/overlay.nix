@@ -25,15 +25,18 @@ final: prev: {
         routeros-vmtest-for = vmtestFor;
       };
       checkedFor = final.callPackage ./checked-for.nix { inherit routeros-check; };
+      deployFor = final.callPackage ./deploy-for.nix {
+        declarative-routeros = tool;
+        routeros-checked-for = checkedFor;
+        routeros-vmtest-check-for = vmtestCheckFor;
+      };
     in
     tool.overrideAttrs (old: {
       passthru = (old.passthru or { }) // {
-        inherit chr routeros-check checkedFor vmtestFor vmtestCheckFor vmtestRefusalFor;
+        inherit chr routeros-check checkedFor vmtestFor vmtestCheckFor vmtestRefusalFor deployFor;
 
-        deployFor = final.callPackage ./deploy-for.nix {
-          declarative-routeros = tool;
-          routeros-checked-for = checkedFor;
-          routeros-vmtest-check-for = vmtestCheckFor;
+        deploySelftest = final.callPackage ./deploy-selftest.nix {
+          routeros-deploy-for = deployFor;
         };
 
         vmtestSelftest = final.callPackage ./vmtest-selftest.nix {
