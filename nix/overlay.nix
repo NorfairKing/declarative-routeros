@@ -15,9 +15,9 @@ final: prev: {
   declarative-routeros =
     let
       tool = final.callPackage ../declarative-routeros { };
-      chr = final.callPackage ./chr.nix { };
+      chrs = final.callPackage ./chr.nix { };
       routeros-check = final.callPackage ../routeros-check { };
-      vmtestFor = final.callPackage ./vmtest-for.nix { inherit chr; };
+      vmtestFor = final.callPackage ./vmtest-for.nix { inherit chrs; };
       vmtestCheckFor = final.callPackage ./vmtest-check-for.nix {
         routeros-vmtest-for = vmtestFor;
       };
@@ -33,7 +33,8 @@ final: prev: {
     in
     tool.overrideAttrs (old: {
       passthru = (old.passthru or { }) // {
-        inherit chr routeros-check checkedFor vmtestFor vmtestCheckFor vmtestRefusalFor deployFor;
+        chr = chrs.default;
+        inherit chrs routeros-check checkedFor vmtestFor vmtestCheckFor vmtestRefusalFor deployFor;
 
         deploySelftest = final.callPackage ./deploy-selftest.nix {
           routeros-deploy-for = deployFor;

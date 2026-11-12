@@ -42,6 +42,11 @@
         routeros-vmtest-selftest = pkgs.declarative-routeros.vmtestSelftest;
       };
 
+      apps.${system}.update-chr-images = {
+        type = "app";
+        program = "${pkgs.declarative-routeros.routeros-check}/bin/update-chr-images";
+      };
+
       checks.${system} = {
         release = self.packages.${system}.default;
         shell = self.devShells.${system}.default;
@@ -49,6 +54,23 @@
         inherit (pkgs.declarative-routeros) routeros-check;
 
         routeros-deploy-selftest = pkgs.declarative-routeros.deploySelftest;
+
+        # Which RouterOS a vm test boots, decided from the record alone, so this
+        # needs no image and no vm.
+        chr-for-chassis =
+          let
+            nearest = pkgs.declarative-routeros.chrs.nearestIn [ "7.15" "7.15.1" "7.21" "7.25.1" ];
+          in
+          assert nearest "7.21" == "7.21";
+          assert nearest "7.11beta4" == "7.15";
+          assert nearest "7.15beta2" == "7.15";
+          assert nearest "7.15.1" == "7.15.1";
+          assert nearest "7.16" == "7.21";
+          assert nearest "7.21rc1" == "7.21";
+          assert nearest "7.26beta2" == "7.25.1";
+          assert (pkgs.declarative-routeros.chrs.forChassis { version = "7.11beta4"; }).version == "7.21";
+          assert (pkgs.declarative-routeros.chrs.forChassis { version = "7.21.3"; }).version == "7.21.3";
+          pkgs.runCommand "chr-for-chassis" { } "touch $out";
 
         hopinion = hopinionPkgs.hopinion.makeHopinionCheck {
           src = ./.;

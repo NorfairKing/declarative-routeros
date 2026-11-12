@@ -4,7 +4,7 @@
 , expect
 , qemu
 , coreutils
-, chr
+, chrs
 }:
 # RouterOS is the only thing that parses RouterOS. Everything the chassis decides
 # is decided here, so a chassis this image cannot stand in for is an evaluation
@@ -15,6 +15,7 @@
 }:
 let
   described = builtins.fromJSON (builtins.readFile chassis);
+  chr = chrs.forChassis described;
 
   # Served read-only by qemu's own tftp server, so the router imports this file
   # byte for byte with no host network involved.
@@ -23,9 +24,10 @@ let
     cp ${configuration} $out/configuration.rsc
   '';
 
-  # Said out loud rather than refused, because there is no older CHR to boot.
-  # What covers the gap is routeros-check --export, since the words in an export
-  # are the words the router itself accepts.
+  # Said out loud rather than refused, because MikroTik builds no CHR of some
+  # versions.
+  # What covers the gap is the deployment's pre-flight, which asks the router
+  # itself whether it can compile the file.
   aboutTheVersion =
     if described.version == chr.version
     then "echo 'That router and this vm both run RouterOS ${chr.version}.'"

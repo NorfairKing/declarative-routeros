@@ -11,10 +11,14 @@ library:
   source-dirs: src
   dependencies:
     - aeson
+    - aeson-pretty
     - base
     - bytestring
     - containers
     - diagnose
+    - http-client
+    - http-client-tls
+    - http-types
     - opt-env-conf
     - path
     - path-io
@@ -30,13 +34,24 @@ executables:
       - base
       - routeros-check
 
+  # Run by hand every so often, with its output committed as
+  # nix/chr-images.json: it asks MikroTik, so no build can.
+  update-chr-images:
+    main: Main.hs
+    source-dirs: update-chr-images
+    dependencies:
+      - base
+      - routeros-check
+
 tests:
   routeros-check-test:
     main: Spec.hs
     source-dirs: test
     dependencies:
+      - QuickCheck
       - aeson
       - base
+      - containers
       - path
       - path-io
       - routeros-check

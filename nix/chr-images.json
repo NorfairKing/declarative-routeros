@@ -1,0 +1,230 @@
+{
+  "7.15": {
+    "sha256": "939dafdae58d3d3c9bebc089e29bd9f070a405f4b1b6d0e33635cf2c68703687",
+    "url": "https://download.mikrotik.com/routeros/7.15/chr-7.15-arm64.img.zip"
+  },
+  "7.15.1": {
+    "sha256": "a86431189d052b547a2e48a771f272ec1f96cb3f1001c364219d2ae9978d7d44",
+    "url": "https://download.mikrotik.com/routeros/7.15.1/chr-7.15.1-arm64.img.zip"
+  },
+  "7.15.2": {
+    "sha256": "3e441b92488e8832cbb6eccc14db0b87874950c8253bd14bf31c883a48d4aeba",
+    "url": "https://download.mikrotik.com/routeros/7.15.2/chr-7.15.2-arm64.img.zip"
+  },
+  "7.15.3": {
+    "sha256": "201dbd4ee43cca0375eeb088a0f103370669f1ff09233cdd9984802a217ef7e5",
+    "url": "https://download.mikrotik.com/routeros/7.15.3/chr-7.15.3-arm64.img.zip"
+  },
+  "7.16": {
+    "sha256": "0ebfadc1848612f2efbf48e7154d472f351b75d8f6713544a505de2f042a82bf",
+    "url": "https://download.mikrotik.com/routeros/7.16/chr-7.16-arm64.img.zip"
+  },
+  "7.16.1": {
+    "sha256": "cc95e9f6d5613dcb45208b850d141ecb156b75eaf87ac52c81fc92e0456aff2c",
+    "url": "https://download.mikrotik.com/routeros/7.16.1/chr-7.16.1-arm64.img.zip"
+  },
+  "7.16.2": {
+    "sha256": "827c68304cb7163cadf5d5436ebb0d2b0392f3980925519cb8a83211adf290a9",
+    "url": "https://download.mikrotik.com/routeros/7.16.2/chr-7.16.2-arm64.img.zip"
+  },
+  "7.17": {
+    "sha256": "60148b14a0f4c3471fd0bd5c6d4cc9bdbd5ae484ed9cdcd0c2908b075c721342",
+    "url": "https://download.mikrotik.com/routeros/7.17/chr-7.17-arm64.img.zip"
+  },
+  "7.17.1": {
+    "sha256": "82470b944f8364265e52af9b804283d70b4a976e17e96a7d0209801d59fd8985",
+    "url": "https://download.mikrotik.com/routeros/7.17.1/chr-7.17.1-arm64.img.zip"
+  },
+  "7.17.2": {
+    "sha256": "02c4854be3f5a817464b963ca43e4966174e944d244c617707b69d15d14ae9ac",
+    "url": "https://download.mikrotik.com/routeros/7.17.2/chr-7.17.2-arm64.img.zip"
+  },
+  "7.18": {
+    "sha256": "6978467646cbafc1175703a87891db1fc95fa4ae71c6b2900c3f969ea5f4c847",
+    "url": "https://download.mikrotik.com/routeros/7.18/chr-7.18-arm64.img.zip"
+  },
+  "7.18.1": {
+    "sha256": "0a610a43941d7b0ec2e66ddb5f9a6311f28a124ad5d959df2ff44af3ae21dee0",
+    "url": "https://download.mikrotik.com/routeros/7.18.1/chr-7.18.1-arm64.img.zip"
+  },
+  "7.18.2": {
+    "sha256": "f4ddafd1fb6cf1066168a6ca5092bf8a8fce60ffd2db13ee6c2a087408a490e4",
+    "url": "https://download.mikrotik.com/routeros/7.18.2/chr-7.18.2-arm64.img.zip"
+  },
+  "7.19": {
+    "sha256": "0a539ce677d7ded85c6083e9a02e293cc7d1325c92fb30090d7968b86e57b797",
+    "url": "https://download.mikrotik.com/routeros/7.19/chr-7.19-arm64.img.zip"
+  },
+  "7.19.1": {
+    "sha256": "c8179aa916f4163f0e668eac981af78914d594c7004c8d579096d2adafee5449",
+    "url": "https://download.mikrotik.com/routeros/7.19.1/chr-7.19.1-arm64.img.zip"
+  },
+  "7.19.2": {
+    "sha256": "70723e485107aee5bb4384c1e53ebca7d5a30a19e1bbc9aac85961517d62cc2c",
+    "url": "https://download.mikrotik.com/routeros/7.19.2/chr-7.19.2-arm64.img.zip"
+  },
+  "7.19.3": {
+    "sha256": "eabbb62701434716aaaad1ac6f2c4e0216a99d29eab6246d62f20d3cd43f7538",
+    "url": "https://download.mikrotik.com/routeros/7.19.3/chr-7.19.3-arm64.img.zip"
+  },
+  "7.19.4": {
+    "sha256": "68ffe9e403e46107ab7fadaccf2a978357a0da438e94e31149d58d0e4e60ebaf",
+    "url": "https://download.mikrotik.com/routeros/7.19.4/chr-7.19.4-arm64.img.zip"
+  },
+  "7.19.5": {
+    "sha256": "97f1445f48221b8081234a5dc5dad9eb0a5a761cc16e3189b7677c60618612a2",
+    "url": "https://download.mikrotik.com/routeros/7.19.5/chr-7.19.5-arm64.img.zip"
+  },
+  "7.19.6": {
+    "sha256": "c0bc533eb365a3ce32442a90ade3edae46e8cf05916b7403e78dbc63176e0ac5",
+    "url": "https://download.mikrotik.com/routeros/7.19.6/chr-7.19.6-arm64.img.zip"
+  },
+  "7.20": {
+    "sha256": "02bc88ca77bc83f66f24bd0cfb6f1d89e42367596de09195f987ec9c6f91ffba",
+    "url": "https://download.mikrotik.com/routeros/7.20/chr-7.20-arm64.img.zip"
+  },
+  "7.20.1": {
+    "sha256": "1cb084ee842e2c7b829f442c6e959728a49f2485f4177ea1ab860c72052e6fc1",
+    "url": "https://download.mikrotik.com/routeros/7.20.1/chr-7.20.1-arm64.img.zip"
+  },
+  "7.20.2": {
+    "sha256": "05d4115bfbfa62da259d590bb8704db930576fa182d6931af138e8fa8a26aac8",
+    "url": "https://download.mikrotik.com/routeros/7.20.2/chr-7.20.2-arm64.img.zip"
+  },
+  "7.20.3": {
+    "sha256": "5bca54b7280265adddb45590205e4a3a260a3e51593d4ca59d8d09343290352b",
+    "url": "https://download.mikrotik.com/routeros/7.20.3/chr-7.20.3-arm64.img.zip"
+  },
+  "7.20.4": {
+    "sha256": "4255253883eb628483457893813abee2e8fc90bc1fa0018f33916a48e4a2f5a5",
+    "url": "https://download.mikrotik.com/routeros/7.20.4/chr-7.20.4-arm64.img.zip"
+  },
+  "7.20.5": {
+    "sha256": "3f5847191a25508c2f60a0225ceea2c598222cdb880c1ff073d7ab8253d9c1d9",
+    "url": "https://download.mikrotik.com/routeros/7.20.5/chr-7.20.5-arm64.img.zip"
+  },
+  "7.20.6": {
+    "sha256": "50ce1cb3e45024b03defde6f9f33c3a42b5a4da1bc68dbd0ea4b6371f6f28d7e",
+    "url": "https://download.mikrotik.com/routeros/7.20.6/chr-7.20.6-arm64.img.zip"
+  },
+  "7.20.7": {
+    "sha256": "0c2c0889468ef77eb6a92d8a62056894a4b24a500f340a087ecf52f23bcf725f",
+    "url": "https://download.mikrotik.com/routeros/7.20.7/chr-7.20.7-arm64.img.zip"
+  },
+  "7.20.8": {
+    "sha256": "93364a94df7ef49dc996ea804cc983de8a89049cf86cab8c5f5e89345952b552",
+    "url": "https://download.mikrotik.com/routeros/7.20.8/chr-7.20.8-arm64.img.zip"
+  },
+  "7.21": {
+    "sha256": "7a76d2ea13cea87a63842b9401657e51c886fb7aef452a29d2d231e0d4d57a17",
+    "url": "https://download.mikrotik.com/routeros/7.21/chr-7.21-arm64.img.zip"
+  },
+  "7.21.1": {
+    "sha256": "9c5151cac0a3744b5655f6a79abadb52c6f0fa2cca5c6474fa773390dc6395ed",
+    "url": "https://download.mikrotik.com/routeros/7.21.1/chr-7.21.1-arm64.img.zip"
+  },
+  "7.21.2": {
+    "sha256": "b0311ca3a2ddf2c3a2007f98af06dfde2696f231c4624c1fe50a85b66a4652b9",
+    "url": "https://download.mikrotik.com/routeros/7.21.2/chr-7.21.2-arm64.img.zip"
+  },
+  "7.21.3": {
+    "sha256": "5ed5f29eb8f6fa9493a521c70fc611560140c2d2a119e755f1a05ca6cad6eba1",
+    "url": "https://download.mikrotik.com/routeros/7.21.3/chr-7.21.3-arm64.img.zip"
+  },
+  "7.21.4": {
+    "sha256": "14dec7e86b4b6e257365658ad1d11f6f65771bb6b6ece84b332ebb633e060b72",
+    "url": "https://download.mikrotik.com/routeros/7.21.4/chr-7.21.4-arm64.img.zip"
+  },
+  "7.21.5": {
+    "sha256": "7175864c63f509d395c8bf39c82eac5e3e78f83532dc402a296ae2ac8ba883ac",
+    "url": "https://download.mikrotik.com/routeros/7.21.5/chr-7.21.5-arm64.img.zip"
+  },
+  "7.22": {
+    "sha256": "980d00d5066dabad801f5166c04435cdb8073486bf7d6d9cc632e22bd003f14a",
+    "url": "https://download.mikrotik.com/routeros/7.22/chr-7.22-arm64.img.zip"
+  },
+  "7.22.1": {
+    "sha256": "033572ef7d4001e0d4c5c82a543cfc1ada06a4df4b29358eff655715cbee9c19",
+    "url": "https://download.mikrotik.com/routeros/7.22.1/chr-7.22.1-arm64.img.zip"
+  },
+  "7.22.2": {
+    "sha256": "ba47e36e4a17f39896cfc81972e9245513871c35d0c582151014c04dcb776e47",
+    "url": "https://download.mikrotik.com/routeros/7.22.2/chr-7.22.2-arm64.img.zip"
+  },
+  "7.22.3": {
+    "sha256": "7c1eb21f6532a15b6a459c59fb93f7d49fb4c910a22d71118bde766b5be78ac5",
+    "url": "https://download.mikrotik.com/routeros/7.22.3/chr-7.22.3-arm64.img.zip"
+  },
+  "7.23": {
+    "sha256": "1f3b4dca9d328eb3d1c8777e6e4aa1b1a3c6510081df79b231237511b1c47be3",
+    "url": "https://download.mikrotik.com/routeros/7.23/chr-7.23-arm64.img.zip"
+  },
+  "7.23.1": {
+    "sha256": "c995175991a2d8a4fe6f9eef2cfc44619129ba4e08c7ebc913fa8cebd7d4b4ae",
+    "url": "https://download.mikrotik.com/routeros/7.23.1/chr-7.23.1-arm64.img.zip"
+  },
+  "7.23.2": {
+    "sha256": "69ba19958a09cea7520930e0746292b6479e193c50fad6b5500531c41204563b",
+    "url": "https://download.mikrotik.com/routeros/7.23.2/chr-7.23.2-arm64.img.zip"
+  },
+  "7.23.3": {
+    "sha256": "6e8118777c08235ac64bc60c378f53b4fa3e6e0cb1a5934966eb3d87118bf1c6",
+    "url": "https://download.mikrotik.com/routeros/7.23.3/chr-7.23.3-arm64.img.zip"
+  },
+  "7.23.4": {
+    "sha256": "b84d544408f00a5ae66b9c9bcc1157b9b8228dabd4dc4745d8d1544b1062a83b",
+    "url": "https://download.mikrotik.com/routeros/7.23.4/chr-7.23.4-arm64.img.zip"
+  },
+  "7.23.5": {
+    "sha256": "6663a8b108c1d01d3a94ee59faa965c2f3ace967affa33e58d681a2783eb2315",
+    "url": "https://download.mikrotik.com/routeros/7.23.5/chr-7.23.5-arm64.img.zip"
+  },
+  "7.23.6": {
+    "sha256": "c753c2339a790d867f265d25308a425f420e36a2e56781bed6c6c4c5998d0013",
+    "url": "https://download.mikrotik.com/routeros/7.23.6/chr-7.23.6-arm64.img.zip"
+  },
+  "7.23.7": {
+    "sha256": "11c9abc297fbe86beaed844bb4a0a06ae7d842c45993616c020b9d7004fc60c6",
+    "url": "https://download.mikrotik.com/routeros/7.23.7/chr-7.23.7-arm64.img.zip"
+  },
+  "7.23.8": {
+    "sha256": "b197b11e388934967af0c2d65244fe3cf6c84e0cfa14ea725de495697cad979b",
+    "url": "https://download.mikrotik.com/routeros/7.23.8/chr-7.23.8-arm64.img.zip"
+  },
+  "7.24": {
+    "sha256": "b36a61b0b13a775d1834e2ea307b6b949b6cccd93949bf1a8df778cccb0da5c6",
+    "url": "https://download.mikrotik.com/routeros/7.24/chr-7.24-arm64.img.zip"
+  },
+  "7.24.1": {
+    "sha256": "b2c5e8c3c7141e5266d384af990568b95e83d8c139b190fa08bdf45608c13be4",
+    "url": "https://download.mikrotik.com/routeros/7.24.1/chr-7.24.1-arm64.img.zip"
+  },
+  "7.24.2": {
+    "sha256": "a0358283d785feb3d65af0af4bc6849783c1dd9bb66ac9dbaacae9c803b22bc7",
+    "url": "https://download.mikrotik.com/routeros/7.24.2/chr-7.24.2-arm64.img.zip"
+  },
+  "7.24.3": {
+    "sha256": "3dd96523e93386719a91a0365947c7dfca6320b8a99f4be191df9c89b5030be9",
+    "url": "https://download.mikrotik.com/routeros/7.24.3/chr-7.24.3-arm64.img.zip"
+  },
+  "7.24.4": {
+    "sha256": "6ba35e64bbfc31283c5b3fc2d4e42500df851362fb8934941436286f8b79ce12",
+    "url": "https://download.mikrotik.com/routeros/7.24.4/chr-7.24.4-arm64.img.zip"
+  },
+  "7.24.5": {
+    "sha256": "7c6dc9302e17b4da7bddf2f5601eb603b26709f82aadefc9693c88acad56ad82",
+    "url": "https://download.mikrotik.com/routeros/7.24.5/chr-7.24.5-arm64.img.zip"
+  },
+  "7.24.6": {
+    "sha256": "eeec0ee0105c7f295046b584464663707008bf19b3293b9a56be2d502665bae4",
+    "url": "https://download.mikrotik.com/routeros/7.24.6/chr-7.24.6-arm64.img.zip"
+  },
+  "7.25": {
+    "sha256": "e18a04f51295b83c43e94260819c7d4b97ff882ab11a2b93092d46d992efa271",
+    "url": "https://download.mikrotik.com/routeros/7.25/chr-7.25-arm64.img.zip"
+  },
+  "7.25.1": {
+    "sha256": "205e8408c61eeb0da7554e81b7ec508294b54b6d1a66d7e90fa57cd3f123a77e",
+    "url": "https://download.mikrotik.com/routeros/7.25.1/chr-7.25.1-arm64.img.zip"
+  }
+}

@@ -1,7 +1,7 @@
 {
   "boardName": "Example-3G",
   "architectureName": "arm64",
-  "version": "7.21",
+  "version": "7.25.1",
   "interfaces": [
     "ether1",
     "ether2",
