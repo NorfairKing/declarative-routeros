@@ -308,9 +308,6 @@ notRedeployableBeforeFallible commands =
           Just (c, _) -> isDigit c
           Nothing -> False
 
-knownVerbs :: [Text]
-knownVerbs = ["add", "set", "remove"]
-
 wellFormed :: Command -> Bool
 wellFormed command =
   not (T.null (commandSection command))
