@@ -58,8 +58,14 @@ spec = withoutTimeout $
             shouldSucceed "reading the router afterwards"
               =<< tool (["download"] <> reach router <> ["--into", fromAbsDir recordAfter])
             exportAfter <- readFileAsUtf8 (recordAfter </> [relfile|export.rsc|])
-            when (exportAfter /= exportBefore) $
-              expectationFailure (unlines ["it changed the router anyway:", T.unpack exportAfter])
+            -- RouterOS adds objects of its own for a while after it boots, so
+            -- what the router had before has to still be there, rather than
+            -- be all there is.
+            let removed = filter (`notElem` T.lines exportAfter) (T.lines exportBefore)
+            when (not (null removed)) $
+              expectationFailure (unlines ("it changed the router anyway, which no longer has:" : map T.unpack removed))
+            when ("comment=before" `T.isInfixOf` exportAfter) $
+              expectationFailure (unlines ["it imported the line before the one the router cannot compile:", T.unpack exportAfter])
 
       -- The router is asked before anything is applied, so whatever the file
       -- creates is not there yet when the lines using it are asked about.
@@ -173,8 +179,12 @@ spec = withoutTimeout $
             shouldSucceed "reading the router afterwards"
               =<< tool (["download"] <> reach router <> ["--into", fromAbsDir recordAfter])
             exportAfter <- readFileAsUtf8 (recordAfter </> [relfile|export.rsc|])
-            when (exportAfter /= exportBefore) $
-              expectationFailure (unlines ["it changed the router anyway:", T.unpack exportAfter])
+            -- RouterOS adds objects of its own for a while after it boots, so
+            -- what the router had before has to still be there, rather than
+            -- be all there is.
+            let removed = filter (`notElem` T.lines exportAfter) (T.lines exportBefore)
+            when (not (null removed)) $
+              expectationFailure (unlines ("it changed the router anyway, which no longer has:" : map T.unpack removed))
 
       it "refuses a router that is not the one the checks read" $ \router -> do
         halves <- checkedHalvesOf [reldir|reachable|]
