@@ -259,8 +259,20 @@ enum Verdict {
     NoCommand,
 }
 
+/// RouterOS 7.11 marks a parameter it does not know as an error, and 7.25 as an
+/// inactive object, which before the command would be a menu it does not have.
 fn verdict(tokens: &[String]) -> Verdict {
-    if let Some(byte) = tokens.iter().position(|token| token == "error") {
+    let after_command = tokens
+        .iter()
+        .position(|token| token == "cmd")
+        .unwrap_or(tokens.len());
+    let unknown_parameter = tokens
+        .iter()
+        .skip(after_command)
+        .position(|token| token == "obj-inactive")
+        .map(|offset| after_command + offset);
+    let error = tokens.iter().position(|token| token == "error");
+    if let Some(byte) = error.into_iter().chain(unknown_parameter).min() {
         Verdict::Error { byte }
     } else if tokens.iter().any(|token| token == "cmd") {
         Verdict::Compiles
@@ -401,6 +413,27 @@ mod tests {
         assert_eq!(
             verdict(&tokens(&["dir", "dir", "dir", "none", "dir", "dir"])),
             Verdict::Menu
+        );
+    }
+
+    #[test]
+    fn a_parameter_newer_routeros_does_not_know_is_where_it_stops() {
+        assert_eq!(
+            verdict(&tokens(&[
+                "dir",
+                "none",
+                "cmd",
+                "none",
+                "arg",
+                "syntax-meta",
+                "none",
+                "none",
+                "obj-inactive",
+                "obj-inactive",
+                "syntax-meta",
+                "none"
+            ])),
+            Verdict::Error { byte: 8 }
         );
     }
 
