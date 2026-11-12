@@ -47,6 +47,9 @@ struct Router {
     /// built from no configuration, so it is there to be named even when this
     /// is pointing at a router the checks no longer answer for.
     download_with: String,
+    /// Built from the configuration, which the post-flight compares the record
+    /// with.
+    postflight_with: PathBuf,
 }
 
 pub fn command(flags: RouterFlags) -> Result<(), ssh2::Error> {
@@ -79,6 +82,7 @@ pub fn command(flags: RouterFlags) -> Result<(), ssh2::Error> {
                 checked_against: router.checked_against,
                 record_into: router.record_into,
                 download_with: router.download_with,
+                postflight_with: router.postflight_with,
                 invocation,
                 asking: if flags.yes {
                     apply::Asking::AlreadyAnswered

@@ -1,0 +1,13 @@
+looking up 3 commands
+configuration.rsc:6: the router does not have this
+  /system identity set name=wanted
+  The closest one on the router has name=other, not wanted.
+configuration.rsc:4: the router has this, but not after what configuration.rsc:3 adds
+  /ip firewall filter add chain=input action=drop comment=b
+export-verbose.rsc:4: the router has this, which the configuration does not add
+  /ip firewall filter add action=accept chain=input comment=old
+configuration.rsc:2: the router still has what this removes
+  /ip firewall filter remove [ find comment=old ]
+  export-verbose.rsc:4: /ip firewall filter add action=accept chain=input comment=old
+not looked up:
+  1 :delay commands

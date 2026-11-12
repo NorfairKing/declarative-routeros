@@ -21,6 +21,8 @@ library
       RouterOS.Check.Validation
       RouterOS.Check.Vocabulary
       RouterOS.Images
+      RouterOS.Postflight
+      RouterOS.Postflight.OptParse
   other-modules:
       Paths_routeros_check
   hs-source-dirs:
@@ -36,11 +38,13 @@ library
     , http-client
     , http-client-tls
     , http-types
+    , iproute
     , opt-env-conf
     , path
     , path-io
     , prettyprinter
     , prettyprinter-ansi-terminal
+    , safe-coloured-text
     , text
   default-language: Haskell2010
 
@@ -50,6 +54,18 @@ executable routeros-check
       Paths_routeros_check
   hs-source-dirs:
       app
+  ghc-options: -Wall -Werror
+  build-depends:
+      base
+    , routeros-check
+  default-language: Haskell2010
+
+executable routeros-postflight
+  main-is: Main.hs
+  other-modules:
+      Paths_routeros_check
+  hs-source-dirs:
+      postflight
   ghc-options: -Wall -Werror
   build-depends:
       base
@@ -74,6 +90,7 @@ test-suite routeros-check-test
   other-modules:
       RouterOS.CheckSpec
       RouterOS.ImagesSpec
+      RouterOS.PostflightSpec
       Paths_routeros_check
   hs-source-dirs:
       test
@@ -86,6 +103,7 @@ test-suite routeros-check-test
     , path
     , path-io
     , routeros-check
+    , safe-coloured-text
     , sydtest
     , text
   default-language: Haskell2010

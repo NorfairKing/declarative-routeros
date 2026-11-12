@@ -1,0 +1,2 @@
+looking up 1 command
+the router has every command the configuration gave, in its order, and nothing more in its firewall

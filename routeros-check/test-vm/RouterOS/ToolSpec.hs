@@ -19,6 +19,7 @@ import Network.Socket
 import Path
 import Path.IO
 import RouterOS.Check.File (readFileAsUtf8, writeFileAsUtf8)
+import RouterOS.Postflight (Entry (..), entriesIn, leftOver, missing, outOfOrder, unasked)
 import System.Environment (getEnvironment, lookupEnv)
 import System.Exit
 import System.IO
@@ -108,6 +109,10 @@ spec = withoutTimeout $
               record
           shouldSucceed "applying both halves"
             =<< tool ["router", "--settings", fromAbsFile settings, "--yes"]
+          exportVerbose <- readFileAsUtf8 (record </> [relfile|export-verbose.rsc|])
+          lookedUpIn <- readFileAsUtf8 (record </> [relfile|looked-up-in.rsc|])
+          when (lookedUpIn /= exportVerbose) $
+            expectationFailure "the post-flight was not given what the deployment recorded"
           -- A record missing one is a check that does not run the next time.
           for_
             [ [relfile|export.rsc|],
@@ -118,6 +123,60 @@ spec = withoutTimeout $
               written <- doesFileExist (record </> name)
               when (not written) $
                 expectationFailure (unwords [fromRelFile name, "was not recorded"])
+
+      -- Any way of ending up without a command the file gave will do, and a file
+      -- that takes its own rule away again is one the router accepts every
+      -- line of.
+      it "fails a deployment the post-flight finds commands missing from, and the post-flight names them" $ \router -> do
+        halves <- checkedHalvesOf [reldir|reachable|]
+        withSystemTempDir "routeros-applied" $ \record -> do
+          shouldSucceed "reading the router first"
+            =<< tool (["download"] <> reach router <> ["--into", fromAbsDir record])
+          let rest = record </> [relfile|taken-away.rsc|]
+          writeFileAsUtf8 rest $
+            T.unlines
+              [ "/ip firewall filter",
+                "add action=accept chain=input comment=taken-away-again",
+                "remove [ find comment=taken-away-again ]"
+              ]
+          settings <-
+            settingsFor
+              router
+              record
+              (halves </> [relfile|prefix.rsc|])
+              rest
+              record
+          let lookedUpIn = record </> [relfile|looked-up-in.rsc|]
+          writeFileAsUtf8 (record </> [relfile|postflight|]) $
+            T.unlines
+              [ "#!/bin/sh",
+                T.pack (unwords ["cp \"$1\"", show (fromAbsFile lookedUpIn)]),
+                "exit 1"
+              ]
+          (code, output) <-
+            tool ["router", "--settings", fromAbsFile settings, "--yes"]
+          case code of
+            ExitSuccess ->
+              expectationFailure
+                (unlines ["it called a router done though its post-flight failed:", output])
+            ExitFailure _ -> pure ()
+          let prefix = halves </> [relfile|prefix.rsc|]
+          asked <- concat <$> mapM (\file -> entriesIn (Abs file) <$> readFileAsUtf8 file) [prefix, rest]
+          has <- entriesIn (Abs lookedUpIn) <$> readFileAsUtf8 lookedUpIn
+          missing asked has
+            `shouldBe` [ Entry
+                           { entryFile = Abs rest,
+                             entryLine = 2,
+                             entrySection = "ip firewall filter",
+                             entryVerb = "add",
+                             entrySelects = Just [],
+                             entryArgs = [("action", "accept"), ("chain", "input"), ("comment", "taken-away-again")],
+                             entryText = "add action=accept chain=input comment=taken-away-again"
+                           }
+                       ]
+          -- What RouterOS adds of its own after a reset is not in the firewall,
+          -- and a remove of what is not there leaves nothing over.
+          (outOfOrder asked has, unasked asked has, leftOver asked has) `shouldBe` ([], [], [])
 
       -- The router it is checked against has to be the router, or the staleness
       -- gate fires first and this passes for a reason it is not testing.
@@ -215,6 +274,15 @@ spec = withoutTimeout $
 settingsFor :: Router -> Path Abs Dir -> Path Abs File -> Path Abs File -> Path Abs Dir -> IO (Path Abs File)
 settingsFor router record prefix rest recordInto = do
   let file = record </> [relfile|router.json|]
+  -- Hands over what it is given, so a test can look it up itself.
+  let postflight = record </> [relfile|postflight|]
+  writeFileAsUtf8 postflight $
+    T.unlines
+      [ "#!/bin/sh",
+        T.pack (unwords ["cp \"$1\"", show (fromAbsFile (record </> [relfile|looked-up-in.rsc|]))])
+      ]
+  permissions <- getPermissions postflight
+  setPermissions postflight (setOwnerExecutable True permissions)
   encodeFile
     (fromAbsFile file)
     ( object
@@ -228,7 +296,8 @@ settingsFor router record prefix rest recordInto = do
           "recordInto" .= fromAbsDir recordInto,
           -- What the tool tells a person to run when the router has changed:
           -- printed, never run, so any command will do.
-          "downloadWith" .= ("declarative-routeros download" :: String)
+          "downloadWith" .= ("declarative-routeros download" :: String),
+          "postflightWith" .= fromAbsFile postflight
         ]
     )
   pure file

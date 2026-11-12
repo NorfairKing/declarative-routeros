@@ -1,7 +1,7 @@
 use std::fs;
 use std::io::{stdin, stdout, Write};
 use std::path::PathBuf;
-use std::process::exit;
+use std::process::{exit, Command};
 
 use crate::commands::{download, import, preflight, reset_into, settle, wait};
 use crate::report;
@@ -17,6 +17,9 @@ pub struct ApplySettings {
     /// rather than an action of this one, because this one is built from a
     /// configuration and reading the router must not be.
     pub download_with: String,
+    /// What to run, with the verbose export just recorded, to say which commands
+    /// of the configuration the router does not have.
+    pub postflight_with: PathBuf,
     /// This deployment, spelled out: the program this is reached through adds
     /// flags of its own before anything a person types, so an action of it is
     /// not something you can ask for by naming the program.
@@ -141,11 +144,28 @@ pub fn command(
     settle::settle_for(session_settings.clone())?;
 
     report::step(&format!("recording into {}", apply_settings.record_into.display()));
-    download::command_with(
-        session_settings,
-        download::download_into(&apply_settings.record_into),
-    )?;
+    let recorded = download::download_into(&apply_settings.record_into);
+    let export = recorded.verbose_output_file.clone();
+    download::command_with(session_settings, recorded)?;
     report::good("recorded");
+
+    // Record first: the router has changed whatever this finds, and the next
+    // deployment's checks read the record.
+    report::step("looking up every command of the configuration in what was recorded");
+    let looked_up = match Command::new(&apply_settings.postflight_with).arg(&export).status() {
+        Ok(status) => status.success(),
+        Err(complaint) => report::fatal(
+            &format!("Could not run {}.", apply_settings.postflight_with.display()),
+            &complaint.to_string(),
+        ),
+    };
+    if !looked_up {
+        report::detail(&format!(
+            "{} has been changed, and is not what its configuration says.",
+            apply_settings.name
+        ));
+        exit(1);
+    }
     Ok(())
 }
 

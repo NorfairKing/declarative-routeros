@@ -21,7 +21,7 @@ pub struct DownloadFlags {
 
 pub struct DownloadSettings {
     output_file: PathBuf,
-    verbose_output_file: PathBuf,
+    pub verbose_output_file: PathBuf,
     chassis_file: PathBuf,
 }
 

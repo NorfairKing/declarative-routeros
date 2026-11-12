@@ -27,6 +27,7 @@ final: prev: {
       checkedFor = final.callPackage ./checked-for.nix { inherit routeros-check; };
       deployFor = final.callPackage ./deploy-for.nix {
         declarative-routeros = tool;
+        inherit routeros-check;
         routeros-checked-for = checkedFor;
         routeros-vmtest-check-for = vmtestCheckFor;
       };

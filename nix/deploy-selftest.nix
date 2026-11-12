@@ -36,4 +36,8 @@ linkFarm "routeros-deploy-selftest" [
     name = "asks-a-router-about-both-halves-without-the-vm-test";
     path = deployable.preflight;
   }
+  {
+    name = "looks-up-a-router-in-its-configuration-without-the-vm-test";
+    path = deployable.postflight;
+  }
 ]

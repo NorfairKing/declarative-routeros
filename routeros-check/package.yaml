@@ -19,17 +19,27 @@ library:
     - http-client
     - http-client-tls
     - http-types
+    - iproute
     - opt-env-conf
     - path
     - path-io
     - prettyprinter
     - prettyprinter-ansi-terminal
+    - safe-coloured-text
     - text
 
 executables:
   routeros-check:
     main: Main.hs
     source-dirs: app
+    dependencies:
+      - base
+      - routeros-check
+
+  # Run by a deployment once it has recorded the router, and by .postflight.
+  routeros-postflight:
+    main: Main.hs
+    source-dirs: postflight
     dependencies:
       - base
       - routeros-check
@@ -55,6 +65,7 @@ tests:
       - path
       - path-io
       - routeros-check
+      - safe-coloured-text
       - sydtest
       - text
 

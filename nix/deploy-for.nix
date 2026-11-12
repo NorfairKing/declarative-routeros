@@ -3,6 +3,7 @@
 , makeWrapper
 , writeText
 , declarative-routeros
+, routeros-check
 , routeros-checked-for
 , routeros-vmtest-check-for
 }:
@@ -13,6 +14,8 @@
 #   nix run .#deploy-<name>.download     reads the router into the record
 #   nix run .#deploy-<name>.preflight    asks the router whether it can compile
 #                                       both halves, changing nothing
+#   nix run .#deploy-<name>.postflight   says which commands of the
+#                                       configuration the record does not have
 #   nix run .#deploy-<name>.import-rest  finishes a deployment that stopped
 #
 # Reading the router is built from no configuration, which is what makes it the
@@ -77,6 +80,16 @@ let
     description = "Read what ${name} says about itself into the record the checks read";
   };
 
+  # Given a verbose export, which a deployment has just recorded.
+  postflightCheck = runCommand "${name}-postflight-check"
+    {
+      nativeBuildInputs = [ makeWrapper ];
+      meta.mainProgram = "${name}-postflight-check";
+    } ''
+    makeWrapper ${lib.getExe' routeros-check "routeros-postflight"} "$out/bin/${name}-postflight-check" \
+      --add-flags ${lib.escapeShellArg "--configuration ${checked}/configuration.rsc"}
+  '';
+
   settings = writeText "${name}-router.json" (builtins.toJSON {
     inherit name username address port;
     prefix = "${checked}/prefix.rsc";
@@ -86,6 +99,7 @@ let
     # A whole command rather than something to assemble: this is what a
     # deployment that found the router changed sends you to.
     downloadWith = lib.getExe downloadCommand;
+    postflightWith = lib.getExe postflightCheck;
   });
 in
 commandFor {
@@ -104,6 +118,20 @@ commandFor {
       flags = [ "preflight" "--username" username "--port" (toString port) address "${checked}/prefix.rsc" "${checked}/rest.rsc" ];
       description = "Ask ${name} whether it can compile both halves, without changing it";
     };
+
+    # The record as the last deployment or .download left it, so this asks the
+    # router nothing: to look up the router as it is now, download it first.
+    postflight = runCommand "deploy-${name}-postflight"
+      {
+        nativeBuildInputs = [ makeWrapper ];
+        meta = {
+          description = "Say which commands of ${name}'s configuration its record does not have";
+          mainProgram = "deploy-${name}-postflight";
+        };
+      } ''
+      makeWrapper ${lib.getExe postflightCheck} "$out/bin/deploy-${name}-postflight" \
+        --add-flags ${lib.escapeShellArg "${record}/export-verbose.rsc"}
+    '';
 
     import-rest = commandFor {
       suffix = "-import-rest";
