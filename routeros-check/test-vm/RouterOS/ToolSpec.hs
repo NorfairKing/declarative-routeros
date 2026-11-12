@@ -18,7 +18,7 @@ import qualified Data.Text.IO as TIO
 import Network.Socket
 import Path
 import Path.IO
-import RouterOS.Check.File (writeFileAsUtf8)
+import RouterOS.Check.File (readFileAsUtf8, writeFileAsUtf8)
 import System.Environment (getEnvironment, lookupEnv)
 import System.Exit
 import System.IO
@@ -34,6 +34,47 @@ spec = withoutTimeout $
         configuration <- exampleFile [relfile|valid/minimal.rsc|]
         shouldSucceed "the import"
           =<< tool (["import"] <> reach router <> [fromAbsFile configuration])
+
+      it "refuses, before importing, a command written on the line of its menu that the router cannot compile" $ \router -> do
+        withSystemTempDir "routeros-import" $ \record -> do
+          shouldSucceed "reading the router first"
+            =<< tool (["download"] <> reach router <> ["--into", fromAbsDir record])
+          let configuration = record </> [relfile|one-line.rsc|]
+          writeFileAsUtf8 configuration $
+            T.unlines
+              [ "/ip firewall filter add action=accept chain=input comment=before",
+                "/ip firewall filter add action=accept chain=input no-such-parameter=yes"
+              ]
+          exportBefore <- readFileAsUtf8 (record </> [relfile|export.rsc|])
+          (code, output) <- tool (["import"] <> reach router <> [fromAbsFile configuration])
+          case code of
+            ExitSuccess ->
+              expectationFailure (unlines ["it imported a line the router cannot compile:", output])
+            ExitFailure _ ->
+              when (not ("no-such-parameter" `isInfixOf` output)) $
+                expectationFailure
+                  (unlines ["it stopped, but without naming what the router does not know:", output])
+          withSystemTempDir "routeros-after" $ \recordAfter -> do
+            shouldSucceed "reading the router afterwards"
+              =<< tool (["download"] <> reach router <> ["--into", fromAbsDir recordAfter])
+            exportAfter <- readFileAsUtf8 (recordAfter </> [relfile|export.rsc|])
+            when (exportAfter /= exportBefore) $
+              expectationFailure (unlines ["it changed the router anyway:", T.unpack exportAfter])
+
+      -- The router is asked before anything is applied, so whatever the file
+      -- creates is not there yet when the lines using it are asked about.
+      it "imports a file that uses what it creates" $ \router -> do
+        withSystemTempDir "routeros-import" $ \dir -> do
+          let configuration = dir </> [relfile|creates.rsc|]
+          writeFileAsUtf8 configuration $
+            T.unlines
+              [ "/interface bridge",
+                "add name=created",
+                "/ip address",
+                "add address=10.9.9.1/24 interface=created"
+              ]
+          shouldSucceed "the import"
+            =<< tool (["import"] <> reach router <> [fromAbsFile configuration])
 
       it "resets into one half, waits, and imports the other onto what came up" $ \router -> do
         halves <- checkedHalvesOf [reldir|reachable|]
@@ -96,6 +137,44 @@ spec = withoutTimeout $
               when (not ("there-is-no-such-half.rsc" `isInfixOf` output)) $
                 expectationFailure
                   (unlines ["it stopped, but not over the missing half:", output])
+
+      -- The checks pass a word the router has never used when it is marked
+      -- untried, and the vm may run another RouterOS than the router, so the
+      -- router is the only one left to ask.
+      it "refuses, before resetting, a half the router cannot compile" $ \router -> do
+        halves <- checkedHalvesOf [reldir|reachable|]
+        withSystemTempDir "routeros-applied" $ \record -> do
+          shouldSucceed "reading the router first"
+            =<< tool (["download"] <> reach router <> ["--into", fromAbsDir record])
+          let rest = record </> [relfile|unknown-parameter.rsc|]
+          writeFileAsUtf8 rest $
+            T.unlines
+              [ "/ip firewall filter",
+                "add action=accept chain=input no-such-parameter=yes"
+              ]
+          settings <-
+            settingsFor
+              router
+              record
+              (halves </> [relfile|prefix.rsc|])
+              rest
+              record
+          exportBefore <- readFileAsUtf8 (record </> [relfile|export.rsc|])
+          (code, output) <-
+            tool ["router", "--settings", fromAbsFile settings, "--yes"]
+          case code of
+            ExitSuccess ->
+              expectationFailure (unlines ["it deployed a half the router cannot compile:", output])
+            ExitFailure _ ->
+              when (not ("no-such-parameter" `isInfixOf` output)) $
+                expectationFailure
+                  (unlines ["it stopped, but without naming what the router does not know:", output])
+          withSystemTempDir "routeros-after" $ \recordAfter -> do
+            shouldSucceed "reading the router afterwards"
+              =<< tool (["download"] <> reach router <> ["--into", fromAbsDir recordAfter])
+            exportAfter <- readFileAsUtf8 (recordAfter </> [relfile|export.rsc|])
+            when (exportAfter /= exportBefore) $
+              expectationFailure (unlines ["it changed the router anyway:", T.unpack exportAfter])
 
       it "refuses a router that is not the one the checks read" $ \router -> do
         halves <- checkedHalvesOf [reldir|reachable|]

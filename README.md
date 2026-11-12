@@ -108,6 +108,19 @@ nix build .#deploy-router   # runs the checks
 nix run .#deploy-router     # deploys
 ```
 
+Before it changes anything, a deployment asks the router itself whether it can
+compile both halves, one command at a time, through the router's own console
+highlighter, which runs nothing. RouterOS refuses a whole file over one word it
+does not know, and a refused second half is a router without its firewall or
+NAT. The checks cannot rule that out on their own: the export only has the
+words the router already uses, and the vm may run another version of RouterOS.
+`reset-into` and `import` ask the same question first, and it can be asked by
+hand too:
+
+``` console
+declarative-routeros preflight --username admin 192.168.88.1 rest.rsc
+```
+
 If a deployment stops half way, the two halves of it are commands of their own,
 told the same router:
 

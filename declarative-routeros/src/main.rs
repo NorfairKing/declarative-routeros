@@ -7,6 +7,7 @@ mod session;
 
 use crate::commands::download::{self, DownloadFlags};
 use crate::commands::import::{self, ImportFlags};
+use crate::commands::preflight::{self, PreflightFlags};
 use crate::commands::reset_into::{self, ResetIntoFlags};
 use crate::commands::router::{self, RouterFlags};
 use crate::commands::settle::{self, SettleFlags};
@@ -28,6 +29,8 @@ enum Command {
     ResetInto(ResetIntoFlags),
     /// Import a configuration onto a running router, without resetting it
     Import(ImportFlags),
+    /// Ask the router whether it can compile every command in a file, running none
+    Preflight(PreflightFlags),
     /// Connect and run :put ready until the router answers
     Wait(WaitFlags),
     /// Read /export until it has no error comments
@@ -52,6 +55,7 @@ fn main() -> Result<(), ssh2::Error> {
         Command::Download(flags) => download::command(flags),
         Command::ResetInto(flags) => reset_into::command(flags),
         Command::Import(flags) => import::command(flags),
+        Command::Preflight(flags) => preflight::command(flags),
         Command::Wait(flags) => wait::command(flags),
         Command::Settle(flags) => settle::command(flags),
         Command::Router(flags) => router::command(flags),

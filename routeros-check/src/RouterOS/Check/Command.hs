@@ -36,6 +36,7 @@ commandLine = sourcePositionLine . sourceSpanBegin . commandSpan
 -- section, every other line is a command belonging to it, and comments are
 -- dropped. A blank line ends an @[untried]@ annotation's reach, so it always
 -- sits against what it excuses.
+-- [check:ref ReadingOfAFile]
 parseScript :: SomeBase File -> Text -> [Command]
 parseScript file = go "" Nothing . zip [1 ..] . T.lines
   where

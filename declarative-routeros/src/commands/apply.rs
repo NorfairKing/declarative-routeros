@@ -3,7 +3,7 @@ use std::io::{stdin, stdout, Write};
 use std::path::PathBuf;
 use std::process::exit;
 
-use crate::commands::{download, import, reset_into, settle, wait};
+use crate::commands::{download, import, preflight, reset_into, settle, wait};
 use crate::report;
 use crate::session::{connect, contents_of, SessionSettings};
 
@@ -77,6 +77,21 @@ pub fn command(
         exit(1);
     }
     report::good(&format!("matches {}", apply_settings.checked_against.display()));
+
+    // Before anything is changed, because a refused prefix is a reset router
+    // with nothing on it, and a refused rest is one with no firewall or NAT.
+    // The checks cannot rule either out: what they read is an export, which
+    // only has the words the router already uses, and a vm, which may run
+    // another RouterOS.
+    report::step("asking the router whether it can compile both halves");
+    for half in [&apply_settings.prefix, &apply_settings.rest] {
+        if let Half::HasContent = half_at(half) {
+            if !preflight::preflight(session_settings.clone(), half)? {
+                report::detail(&format!("Nothing was applied to {}.", apply_settings.name));
+                exit(1);
+            }
+        }
+    }
 
     match apply_settings.asking {
         Asking::AlreadyAnswered => (),

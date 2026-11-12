@@ -11,6 +11,8 @@
 #
 #   nix run .#deploy-<name>              applies the configuration
 #   nix run .#deploy-<name>.download     reads the router into the record
+#   nix run .#deploy-<name>.preflight    asks the router whether it can compile
+#                                       both halves, changing nothing
 #   nix run .#deploy-<name>.import-rest  finishes a deployment that stopped
 #
 # Reading the router is built from no configuration, which is what makes it the
@@ -94,6 +96,14 @@ commandFor {
     inherit checked vmtested;
 
     download = downloadCommand;
+
+    # The same question a deployment asks before it changes anything, about the
+    # same halves, without the vm test a deployment waits for.
+    preflight = commandFor {
+      suffix = "-preflight";
+      flags = [ "preflight" "--username" username "--port" (toString port) address "${checked}/prefix.rsc" "${checked}/rest.rsc" ];
+      description = "Ask ${name} whether it can compile both halves, without changing it";
+    };
 
     import-rest = commandFor {
       suffix = "-import-rest";

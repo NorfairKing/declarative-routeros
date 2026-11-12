@@ -5,6 +5,7 @@ use std::process::exit;
 use clap::Args;
 
 
+use crate::commands::preflight::preflight;
 use crate::report;
 use crate::session::{combine_to_session_settings, connect, contents_of, upload, SessionFlags, SessionSettings};
 
@@ -30,10 +31,10 @@ pub fn import_settings_for(script_file: &Path) -> ImportSettings {
 const REMOTE_FILENAME: &str = "declarative-routeros-import.rsc";
 
 pub fn command(flags: ImportFlags) -> Result<(), ssh2::Error> {
-    if import_onto(
-        combine_to_session_settings(flags.session),
-        import_settings_for(&flags.script_file),
-    )? {
+    let session_settings = combine_to_session_settings(flags.session);
+    if preflight(session_settings.clone(), &flags.script_file)?
+        && import_onto(session_settings, import_settings_for(&flags.script_file))?
+    {
         Ok(())
     } else {
         exit(1)

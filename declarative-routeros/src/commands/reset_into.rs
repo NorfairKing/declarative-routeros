@@ -1,9 +1,11 @@
 use std::path::{Path, PathBuf};
+use std::process::exit;
 
 use clap::Args;
 use ssh2::Session;
 use tracing::debug;
 
+use crate::commands::preflight::preflight;
 use crate::report;
 use crate::session::{combine_to_session_settings, connect, contents_of, upload, SessionFlags, SessionSettings};
 
@@ -26,10 +28,12 @@ pub fn reset_into_settings_for(script_file: &Path) -> ResetIntoSettings {
 }
 
 pub fn command(flags: ResetIntoFlags) -> Result<(), ssh2::Error> {
-    command_with(
-        combine_to_session_settings(flags.session),
-        reset_into_settings_for(&flags.script_file),
-    )
+    let session_settings = combine_to_session_settings(flags.session);
+    // A file the router refuses after the reset leaves it with nothing on it.
+    if !preflight(session_settings.clone(), &flags.script_file)? {
+        exit(1)
+    }
+    command_with(session_settings, reset_into_settings_for(&flags.script_file))
 }
 
 pub fn command_with(
