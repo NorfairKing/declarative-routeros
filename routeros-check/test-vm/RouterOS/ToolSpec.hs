@@ -50,6 +50,22 @@ spec = withoutTimeout $
           when (code == ExitSuccess) $
             expectationFailure (unlines ["it said it imported a file the router refused:", output])
 
+      -- Every word of this compiles, so nothing that only reads the file can
+      -- refuse it: the router stops at the line naming a bridge it does not have.
+      it "says that it did not import a file the router stopped partway through" $ \router -> do
+        withSystemTempDir "routeros-import" $ \dir -> do
+          let configuration = dir </> [relfile|stops.rsc|]
+          writeFileAsUtf8 configuration $
+            T.unlines
+              [ "/ip firewall filter",
+                "add action=accept chain=input comment=before",
+                "/interface bridge port",
+                "add bridge=no-such-bridge interface=ether1"
+              ]
+          (code, output) <- tool (["import"] <> reach router <> [fromAbsFile configuration])
+          when (code == ExitSuccess) $
+            expectationFailure (unlines ["it said it imported a file the router stopped partway through:", output])
+
       it "resets into one half, waits, and imports the other onto what came up" $ \router -> do
         halves <- checkedHalvesOf [reldir|reachable|]
         shouldSucceed "the reset"
