@@ -76,9 +76,30 @@ pub fn connect(settings: SessionSettings) -> Result<ssh2::Session, ssh2::Error> 
 }
 
 pub fn try_connect(settings: &SessionSettings) -> Result<Session, String> {
+    try_connect_within(settings, None)
+}
+
+/// For a short question to a router that may be rebooting: a connection to a
+/// router that goes down can go unanswered without ever being closed, and
+/// waiting on it would wait forever.
+/// The other connections carry imports and exports, which take as long as they
+/// take.
+pub fn try_probe(settings: &SessionSettings) -> Result<Session, String> {
+    try_connect_within(settings, Some(PROBE_TIMEOUT))
+}
+
+const PROBE_TIMEOUT: Duration = Duration::from_secs(15);
+
+fn try_connect_within(
+    settings: &SessionSettings,
+    timeout: Option<Duration>,
+) -> Result<Session, String> {
     let tcp = TcpStream::connect_timeout(&settings.router_address, Duration::from_secs(10))
         .map_err(|complaint| format!("no tcp connection: {}", complaint))?;
     let mut session = Session::new().map_err(|complaint| format!("no ssh session: {}", complaint))?;
+    if let Some(timeout) = timeout {
+        session.set_timeout(timeout.as_millis() as u32);
+    }
     session.set_tcp_stream(tcp);
     session
         .handshake()

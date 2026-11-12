@@ -1,11 +1,14 @@
+use std::io::Read;
 use std::path::{Path, PathBuf};
 use std::process::exit;
+use std::time::{Duration, Instant};
 
 use clap::Args;
 use ssh2::Session;
 use tracing::debug;
 
 use crate::commands::preflight::preflight;
+use crate::commands::wait;
 use crate::report;
 use crate::session::{combine_to_session_settings, connect, contents_of, upload, SessionFlags, SessionSettings};
 
@@ -40,12 +43,20 @@ pub fn command_with(
     session_settings: SessionSettings,
     reset_into_settings: ResetIntoSettings,
 ) -> Result<(), ssh2::Error> {
-    let session = connect(session_settings)?;
+    let session = connect(session_settings.clone())?;
+    let uptime_before = wait::uptime_over(&session).unwrap_or_else(|complaint| {
+        report::fatal("Could not read the router's uptime.", &complaint)
+    });
+    let asked_at = Instant::now();
     reset_into(reset_into_settings, session)?;
+    report::detail("waiting for the router to have reset");
+    wait::wait_for_reset(&session_settings, uptime_before, asked_at);
     Ok(())
 }
 
 const REMOTE_FILENAME: &str = "declarative-routeros-script.rsc";
+
+const RESET_ANSWER_TIMEOUT: Duration = Duration::from_secs(60);
 
 fn reset_into(reset_into_settings: ResetIntoSettings, session: Session) -> Result<(), ssh2::Error> {
     let remote_filename = Path::new(REMOTE_FILENAME);
@@ -72,12 +83,35 @@ fn reset_into_configuration(session: Session, remote_filename: &Path) -> Result<
         remote_filename.display()
     );
     report::detail(&format!("running: {}", reset_command));
+    // A router that goes down before it closes the channel could otherwise
+    // keep this waiting forever.
+    session.set_timeout(RESET_ANSWER_TIMEOUT.as_millis() as u32);
     channel.exec(&reset_command)?;
-    // No response to read: the router is already resetting.
+    let mut answer = String::new();
+    // Before the channel has closed, the exit status is 0 whatever the command
+    // did.
+    let closed = channel
+        .read_to_string(&mut answer)
+        .map_err(|complaint| complaint.to_string())
+        .and_then(|_| channel.wait_close().map_err(|complaint| complaint.to_string()));
+    if let Err(complaint) = closed {
+        report::fatal(
+            "Could not tell whether the router took the reset.",
+            &format!(
+                "{}\nIt may be resetting: look at it before deploying again.",
+                complaint
+            ),
+        );
+    }
     let exit_status = channel.exit_status()?;
     debug!("Exit code: {}", exit_status);
+    // A router that refused the reset keeps its configuration, and waiting for
+    // it to reboot would wait for nothing.
     if exit_status != 0 {
-        report::warn(&format!("Exit code {} from the reset.", exit_status));
+        report::fatal(
+            "The router refused to reset.",
+            &format!("Exit code {}: {}", exit_status, answer.trim()),
+        );
     }
     Ok(())
 }
