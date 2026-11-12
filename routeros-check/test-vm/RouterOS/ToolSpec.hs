@@ -136,7 +136,10 @@ settingsFor router record prefix rest recordInto = do
           "prefix" .= fromAbsFile prefix,
           "rest" .= fromAbsFile rest,
           "checkedAgainst" .= fromAbsFile (record </> [relfile|export-verbose.rsc|]),
-          "recordInto" .= fromAbsDir recordInto
+          "recordInto" .= fromAbsDir recordInto,
+          -- What the tool tells a person to run when the router has changed:
+          -- printed, never run, so any command will do.
+          "downloadWith" .= ("declarative-routeros download" :: String)
         ]
     )
   pure file
