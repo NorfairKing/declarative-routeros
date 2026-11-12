@@ -2,9 +2,9 @@
 {-# LANGUAGE QuasiQuotes #-}
 
 -- | The one path in this repository that a vm importing over its own console
--- never touches. RouterOS prints nothing about an import run over ssh, though
--- the same command on a console prints every line it applied, and it accepts a
--- connection well before it will authenticate one.
+-- never touches.
+-- Over ssh, RouterOS exits 0 from an import of a file it would not compile,
+-- and it accepts a connection well before it will authenticate one.
 module RouterOS.ToolSpec (spec) where
 
 import Control.Exception.Safe (bracket, catchAny, displayException, finally, throwIO, tryAny)
@@ -18,7 +18,7 @@ import qualified Data.Text.IO as TIO
 import Network.Socket
 import Path
 import Path.IO
-import RouterOS.Check.File (writeFileAsUtf8)
+import RouterOS.Check.File (readFileAsUtf8, writeFileAsUtf8)
 import System.Environment (getEnvironment, lookupEnv)
 import System.Exit
 import System.IO
@@ -39,6 +39,12 @@ spec = withoutTimeout $
       -- none of it.
       it "says that it did not import a file the router would not compile" $ \router -> do
         withSystemTempDir "routeros-import" $ \dir -> do
+          let readBefore = dir </> [reldir|before|]
+          let readAfter = dir </> [reldir|after|]
+          ensureDir readBefore
+          ensureDir readAfter
+          shouldSucceed "reading the router first"
+            =<< tool (["download"] <> reach router <> ["--into", fromAbsDir readBefore])
           let configuration = dir </> [relfile|refused.rsc|]
           writeFileAsUtf8 configuration $
             T.unlines
@@ -47,8 +53,14 @@ spec = withoutTimeout $
                 "add action=accept chain=input no-such-parameter=yes"
               ]
           (code, output) <- tool (["import"] <> reach router <> [fromAbsFile configuration])
-          when (code == ExitSuccess) $
-            expectationFailure (unlines ["it said it imported a file the router refused:", output])
+          context output $ do
+            code `shouldBe` ExitFailure 1
+            output `shouldSatisfy` ("The router did not run all of the file." `isInfixOf`)
+          shouldSucceed "reading the router afterwards"
+            =<< tool (["download"] <> reach router <> ["--into", fromAbsDir readAfter])
+          exportAfter <- readFileAsUtf8 (readAfter </> [relfile|export.rsc|])
+          exportBefore <- readFileAsUtf8 (readBefore </> [relfile|export.rsc|])
+          exportAfter `shouldBe` exportBefore
 
       -- Every word of this compiles, so nothing that only reads the file can
       -- refuse it: the router stops at the line naming a bridge it does not have.
@@ -63,8 +75,9 @@ spec = withoutTimeout $
                 "add bridge=no-such-bridge interface=ether1"
               ]
           (code, output) <- tool (["import"] <> reach router <> [fromAbsFile configuration])
-          when (code == ExitSuccess) $
-            expectationFailure (unlines ["it said it imported a file the router stopped partway through:", output])
+          context output $ do
+            code `shouldBe` ExitFailure 1
+            output `shouldSatisfy` ("The router did not run all of the file." `isInfixOf`)
 
       it "resets into one half, waits, and imports the other onto what came up" $ \router -> do
         halves <- checkedHalvesOf [reldir|reachable|]
