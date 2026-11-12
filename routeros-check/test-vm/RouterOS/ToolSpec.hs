@@ -35,6 +35,21 @@ spec = withoutTimeout $
         shouldSucceed "the import"
           =<< tool (["import"] <> reach router <> [fromAbsFile configuration])
 
+      -- RouterOS exits 0 over ssh for a file it would not compile, and applies
+      -- none of it.
+      it "says that it did not import a file the router would not compile" $ \router -> do
+        withSystemTempDir "routeros-import" $ \dir -> do
+          let configuration = dir </> [relfile|refused.rsc|]
+          writeFileAsUtf8 configuration $
+            T.unlines
+              [ "/ip firewall filter",
+                "add action=accept chain=input comment=before",
+                "add action=accept chain=input no-such-parameter=yes"
+              ]
+          (code, output) <- tool (["import"] <> reach router <> [fromAbsFile configuration])
+          when (code == ExitSuccess) $
+            expectationFailure (unlines ["it said it imported a file the router refused:", output])
+
       it "resets into one half, waits, and imports the other onto what came up" $ \router -> do
         halves <- checkedHalvesOf [reldir|reachable|]
         shouldSucceed "the reset"
